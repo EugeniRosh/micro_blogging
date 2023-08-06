@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <h1>MicroBlog</h1>
+        <meta charset="UTF-8">
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        {% block mainmanu %}
+        <nav>
+            <br><a href='{% url "index" %}'>Home</a>
+            <br><a href='#'>Trending in your country</a>
+            <br><a href='#'>Profile</a>
+            <br><a href='#'>Tags</a>
+            <br><a href='#'>Notifications</a>
+            <br><a href='#'>Logout</a>
+        {% endblock mainmanu %}
+
+        {% block content %}
+        {% endblock content %}
+    </body>
+</html>
