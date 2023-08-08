@@ -157,3 +157,5 @@ LOGGING = {
         "PIL": {"level": "WARNING", "handlers": ["console_handler"]},
     },
 }
+
+CONFIRMATION_CODE_LIFE_TIME = 3600
