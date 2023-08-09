@@ -29,6 +29,7 @@ def regisration_user(data: RegistrationDTO) -> None:
             username=data.username,
             email=data.email,
             password=data.password,
+            date_of_birth=data.date_of_birth,
             is_active=False,
         )
     except IntegrityError as err:
@@ -37,13 +38,12 @@ def regisration_user(data: RegistrationDTO) -> None:
     role = Group.objects.get(name=data.role)
     create_user.groups.add(role)
 
-    Profiles.objects.create(date_of_birth=data.date_of_birth, auth_user=create_user)
     logger.info(f"Created user:{data.username}")
 
     confirmation_code = uuid4()
     EmailConfirmationCode.objects.create(
         code=confirmation_code,
-        auth_user=create_user,
+        profile=create_user,
         expiration=settings.CONFIRMATION_CODE_LIFE_TIME + int(time()),
     )
 
@@ -70,7 +70,7 @@ def registration_confirmations(confirmation_code: str) -> None:
         )
         raise ExpirationTimeError
 
-    user = email_confirmation_code.auth_user
+    user: Profiles = email_confirmation_code.profile
     user.is_active = True
     user.save()
     logger.info(f"User activated. username:{user.username}")
