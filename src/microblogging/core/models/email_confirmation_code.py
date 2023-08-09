@@ -6,7 +6,7 @@ from .base_model import BaseModel
 
 class EmailConfirmationCode(BaseModel):
     code = models.CharField(max_length=100)
-    auth_user = models.ForeignKey(
+    profile = models.ForeignKey(
         to=get_user_model(),
         related_name="emailconfirmationcode",
         on_delete=models.CASCADE,
