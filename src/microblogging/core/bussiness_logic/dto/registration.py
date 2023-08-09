@@ -8,4 +8,4 @@ class RegistrationDTO:
     email: str
     password: str
     date_of_birth: datetime
-    role = "user"
+    role: str = "user"
