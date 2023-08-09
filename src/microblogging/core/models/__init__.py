@@ -1,6 +1,6 @@
+from .profile import Profiles  # isort:skip
 from .email_confirmation_code import EmailConfirmationCode
 from .followers import Followers
-from .profile import Profiles
 from .tags import Tags
 from .twits import Twits
 from .twits_profiles_likes import TwitsProfilesLikes
