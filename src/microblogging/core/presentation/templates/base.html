@@ -3,6 +3,7 @@
 <head> 
   <meta charset="UTF-8"> 
   <title>{{ title }}</title> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style> 
     body { 
       font-family: Arial, sans-serif;
@@ -71,10 +72,10 @@
   <nav> 
     <div class="nav-container"> 
       <div class="nav-group-1"> 
-        <a href='{% url "index" %}'></i>Home</a> 
-        <a href='#'>Trending in your country</a> 
-        <a href='#'>Tags</a> 
-        <a href='#'>Notifications</a> 
+        <a href='{% url "index" %}'><i class="fa fa-home"></i>Home</a> 
+        <a href='#'><i class="fa  fa-globe"></i>Trending in your country</a> 
+        <a href='#'><i class="fa fa-hashtag"></i>Tags</a> 
+        <a href='#'><i class="fa fa-bell"></i>Notifications</a> 
       </div> 
       <div class="nav-group-2"> 
         <a href='#'>Profile</a> 
