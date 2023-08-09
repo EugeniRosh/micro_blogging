@@ -1,3 +1,4 @@
+from .email_confirmation_code import EmailConfirmationCode
 from .followers import Followers
 from .profile import Profiles
 from .tags import Tags
@@ -16,4 +17,5 @@ __all__ = [
     "TwitsProfilesReposts",
     "TwitsTags",
     "Twits",
+    "EmailConfirmationCode",
 ]

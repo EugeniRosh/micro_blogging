@@ -1,0 +1,15 @@
+{% extends "base.html"%}
+
+{% block content %}
+
+<br><br>
+
+{% if form %}
+<form action="{{ registrations }}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+{% endif %}
+{{ message }}
+{% endblock content %}
