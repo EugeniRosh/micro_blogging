@@ -1,22 +1,21 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from .base_model import BaseModel
 
-
-class Profiles(BaseModel):
-    name = models.CharField(max_length=100, blank=True)
-    surname = models.CharField(max_length=100, blank=True)
+class Profiles(AbstractUser):
+    email = models.CharField(max_length=100, unique=True)
     country = models.CharField(max_length=100, blank=True)
     photo = models.CharField(max_length=100, blank=True)
     date_of_birth = models.DateTimeField(null=True)
-    auth_user = models.OneToOneField(
-        to=get_user_model(), related_name="profiles", on_delete=models.CASCADE
-    )
     followers = models.ManyToManyField(to="profiles", through="followers")
     notification = models.ManyToManyField(
         to="twits", through="twitsprofilesnotifications"
     )
+    update_at = models.DateField(auto_now=True)
+
+    USERNAME_FIELD = "email"
+
+    REQUIRED_FIELDS = ["username", "date_of_birth"]
 
     class Meta:
         db_table = "profiles"
