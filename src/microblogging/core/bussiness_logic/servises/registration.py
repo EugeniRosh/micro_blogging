@@ -28,10 +28,12 @@ def regisration_user(data: RegistrationDTO) -> None:
         create_user = user_model.objects.create(
             username=data.username,
             email=data.email,
-            password=data.password,
             date_of_birth=data.date_of_birth,
             is_active=False,
         )
+        create_user.set_password(data.password)
+        create_user.save()
+
     except IntegrityError as err:
         raise CreateUniqueError(err)
 
