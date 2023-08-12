@@ -1,0 +1,11 @@
+{% block content %}
+<title>{{ title }}</title> 
+<br><br>
+{{ message }}
+<form action="{{ authentication }}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+<br><br><a href='{% url "registration" %}'>Registration</a>
+{% endblock content %}
