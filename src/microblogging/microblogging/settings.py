@@ -107,6 +107,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'core.Profiles'
 
+LOGIN_URL = "authentication"
+
+LOGOUT_REDIRECT_URL = "index"
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
