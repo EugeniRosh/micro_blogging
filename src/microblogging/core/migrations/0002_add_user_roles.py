@@ -31,7 +31,7 @@ def delete_user_roles(apps: StateApps, schema_editor: DatabaseSchemaEditor) -> N
 
 class Migration(migrations.Migration):
     dependencies: list[tuple[str, str]] = [
-        ('core', '0002_emailconfirmationcode'),
+        ('core', '0001_initial'),
     ]
 
     operations = [

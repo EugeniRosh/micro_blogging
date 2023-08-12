@@ -20,6 +20,8 @@ if TYPE_CHECKING:
 @require_http_methods(["GET", "POST"])
 def registrations_controller(request: HttpRequest) -> HttpResponse:
     form = RegistrationsForm()
+    context = {"title": "Registrations"}
+
     if request.POST:
         form_registration = RegistrationsForm(request.POST)
         if form_registration.is_valid():
@@ -28,10 +30,9 @@ def registrations_controller(request: HttpRequest) -> HttpResponse:
             )
             try:
                 regisration_user(data=data)
-                context = {
-                    "title": "Registrations",
-                    "message": "Registration confirmation email has been sent to your",
-                }
+                context.update(
+                    {"message": "Registration confirmation email has been sent to your"}
+                )
                 return render(
                     request=request, template_name="registrations.html", context=context
                 )
@@ -44,5 +45,5 @@ def registrations_controller(request: HttpRequest) -> HttpResponse:
         else:
             form = form_registration
 
-    context = {"title": "Registrations", "form": form}
+    context.update({"form": form})
     return render(request=request, template_name="registrations.html", context=context)
