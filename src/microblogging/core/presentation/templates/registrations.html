@@ -1,13 +1,127 @@
-{% block content %}
-<a href='{% url "index" %}'><i class="fa fa-home"></i>Home</a> 
-<br><br>
+{% block content %}  
+  <title>{{ title }}</title>  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+    
+  <div class="background-image">  
+    {{ message }}  
+    <form action="{{ authentication }}" method="post">  
+      {% csrf_token %}  
+      {{ form.as_p }}  
+      <div class="buttons-container">
+        <button type="submit">Sign In</button>  
 
-{% if form %}
-<form action="{{ registrations }}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
-{% endif %}
-{{ message }}
-{% endblock content %}
+      </div>
+    </form>  
+  </div>  
+    
+  <style>  
+    .background-image {  
+      background-image: url("https://cdn.pixabay.com/photo/2020/12/12/13/15/leaves-5825458_1280.jpg");  
+      background-repeat: no-repeat;  
+      background-size: cover;  
+      background-position: center;  
+      height: 100vh;   
+      display: flex;   
+      justify-content: center;  
+      align-items: center;  
+    }  
+      
+      
+    form {  
+      background-color: white;  
+      padding: 20px;  
+      border-radius: 10px;  
+    }  
+
+    .buttons-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+      
+    button {  
+      background-color: #4CAF50;  
+      color: white;  
+      padding: 10px 20px;  
+      border: none;  
+      border-radius: 5px;  
+      cursor: pointer;    
+    }  
+      
+    button:hover {  
+      background-color: #3e8e41;  
+    }  
+      
+ 
+      
+    a:hover {  
+      text-decoration: underline;  
+    }  
+  </style>  
+
+
+
+  <title>{{ title }}</title> 
+ 
+  <div class="background-image"> 
+    <a href='{% url "index" %}'><i class="fa fa-home"></i>Home</a>   
+    <br><br>  
+    {% if form %}  
+      <form action="{{ registrations }}" method="post">  
+        {% csrf_token %}  
+        {{ form.as_p }}  
+        <button type="submit">Submit</button>  
+      </form>  
+    {% endif %}  
+    {{ message }}  
+    <br><br> 
+ 
+  </div> 
+{% endblock %} 
+ 
+<style> 
+  .background-image {  
+    background-image: url("https://cdn.pixabay.com/photo/2020/12/12/13/15/leaves-5825458_1280.jpg");  
+    background-repeat: no-repeat;  
+    background-size: cover;  
+    background-position: center;  
+    height: 100vh;   
+    display: flex;   
+    justify-content: center;  
+    align-items: center;  
+  }  
+
+  form {  
+    background-color: white;  
+    padding: 20px;  
+    border-radius: 10px;  
+  }  
+
+  button {  
+    background-color: #4CAF50;  
+    color: white;  
+    padding: 10px 20px;  
+    border: none;  
+    border-radius: 5px;  
+    cursor: pointer;    
+  }  
+
+  button:hover {  
+    background-color: #3e8e41;  
+  }  
+
+  a {  
+    color: white;  
+    text-decoration: none;  
+    background-color: #4CAF50;  
+    padding: 10px 20px;  
+    border-radius: 5px;  
+  }  
+
+  a:hover {  
+    text-decoration: underline;  
+  }  
+</style>
