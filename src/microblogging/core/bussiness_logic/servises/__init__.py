@@ -3,6 +3,7 @@ from .common import (
     convert_data_from_form_in_dacite,
     parsing_create_unique_error_message,
 )
+from .profile import get_user_profile
 from .registration import regisration_user, registration_confirmations
 
 __all__ = [
@@ -13,4 +14,5 @@ __all__ = [
     "parsing_create_unique_error_message",
     "authentication_user",
     "logout_user",
+    "get_user_profile",
 ]
