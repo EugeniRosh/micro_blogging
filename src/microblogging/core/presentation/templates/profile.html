@@ -1,0 +1,18 @@
+{% extends "base.html"%}
+
+{% block content %}
+<p>{{ profile.photo }}Username: {{ profile.username }}</p>
+<p>Name: {{ profile.first_name }}</p>
+<p>Surname: {{ profile.last_name }}</p>
+<p>Registration date: {{ profile.date_joined }}</p>
+{% if user.username != profile.username  %}
+    <p>Country: {{ profile.country }}</p>
+    <p>Description: {{ profile.description}}</p>
+{% endif %}
+<p>
+    <a href="#">Followers: {{ profile.count_followers }}</a>  
+    <a href="#">Following: {{ profile.count_following }}</a>
+</p>
+<br><br>
+<a href="#">Edit profile</a>
+{% endblock content %}
