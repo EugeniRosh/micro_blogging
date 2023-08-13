@@ -13,6 +13,7 @@ from core.bussiness_logic.exeptions import (
 from core.models import EmailConfirmationCode, Profiles
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from django.db.utils import IntegrityError
 
@@ -25,14 +26,14 @@ logger = logging.getLogger(__name__)
 def regisration_user(data: RegistrationDTO) -> None:
     user_model = get_user_model()
     try:
+        data.password = make_password(data.password)
         create_user = user_model.objects.create(
             username=data.username,
             email=data.email,
             date_of_birth=data.date_of_birth,
             is_active=False,
+            password=data.password,
         )
-        create_user.set_password(data.password)
-        create_user.save()
 
     except IntegrityError as err:
         raise CreateUniqueError(err)
