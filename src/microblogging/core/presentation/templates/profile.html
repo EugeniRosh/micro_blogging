@@ -10,9 +10,11 @@
     <p>Description: {{ profile.description}}</p>
 {% endif %}
 <p>
-    <a href="#">Followers: {{ profile.count_followers }}</a>  
-    <a href="#">Following: {{ profile.count_following }}</a>
+    <a href='{% url "followers" profile.username %}'>Followers: {{ profile.count_followers }}</a>  
+    <a href='{% url "following" profile.username %}'>Following: {{ profile.count_following }}</a>
 </p>
 <br><br>
 <a href="#">Edit profile</a>
+<br>
+<a href="">Add new twit</a>
 {% endblock content %}
