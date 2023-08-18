@@ -1,7 +1,11 @@
 {% extends "base.html"%}
 
 {% block content %}
-<p>{{ profile.photo }}Username: {{ profile.username }}</p>
+{% if profile.photo %}
+    <img src="{{ profile.photo.url }}">
+{% endif %}
+<p></p>
+<p>{{ profile.username }}</p>
 <p>Name: {{ profile.first_name }}</p>
 <p>Surname: {{ profile.last_name }}</p>
 <p>Registration date: {{ profile.date_joined }}</p>
@@ -10,11 +14,13 @@
     <p>Description: {{ profile.description}}</p>
 {% endif %}
 <p>
-    <a href='{% url "followers" profile.username %}'>Followers: {{ followers_num.count_followers }}</a>  
-    <a href='{% url "following" profile.username %}'>Following: {{ followers_num.count_following }}</a>
+    <a href='{% url "followers" profile.username %}'>Followers: {{ profile.count_followers }}</a>  
+    <a href='{% url "following" profile.username %}'>Following: {{ profile.count_following }}</a>
 </p>
 <br><br>
-<a href="#">Edit profile</a>
-<br>
-<a href="">Add new twit</a>
+{% if user.username == profile.username  %}
+    <a href='{% url "edit_profile" %}'>Edit profile</a>
+    <br>
+    <a href="">Add new twit</a>
+{% endif %}
 {% endblock content %}
