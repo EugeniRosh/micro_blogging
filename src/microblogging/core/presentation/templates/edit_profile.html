@@ -1,0 +1,63 @@
+{% extends "base.html"%}
+
+{% block content %}
+
+ 
+<p>
+    <form action="{{ edit_profile }}" method="post">  
+        {% csrf_token %}  
+        {{ first_name_form.as_p }}
+        <button type="submit">edit</button>   
+    </form>  
+</p>
+<p>
+    <form action="{{ edit_profile }}" method="post"> 
+        {% csrf_token %}   
+        {{ last_name_form.as_p }}
+        <button type="submit">edit</button>   
+    </form>  
+</p>
+<p>
+    {{ message }}
+    <form action="{{ edit_profile }}" method="post">  
+        {% csrf_token %}  
+        {{ username_form.as_p }}
+        <button type="submit">edit</button>  
+    </form>   
+</p>
+<p>
+    <form action="{{ edit_profile }}" method="post">  
+        {% csrf_token %}  
+        {{ email_form.as_p }}
+        <button type="submit">edit</button>   
+    </form>  
+</p>
+<p>
+    <form action="{{ edit_profile }}" method="post">  
+        {% csrf_token %}  
+        {{ country_form.as_p }}
+        <button type="submit">edit</button>  
+    </form>  
+</p>
+<p>
+    <form action="{{ edit_profile }}" method="post", enctype="multipart/form-data">  
+        {% csrf_token %}  
+        {{ photo_form.as_p }}
+        <button type="submit" name="photo">edit</button>   
+    </form>  
+</p>
+<p>
+    <form action="{{ edit_profile }}" method="post">  
+        {% csrf_token %}  
+        {{ description_form.as_p }}
+        <button type="submit">edit</button>   
+    </form>  
+</p>
+<p>
+    <form action="{{ edit_profile }}" method="post">  
+        {% csrf_token %}  
+        {{ date_of_birth_form.as_p }}
+        <button type="submit">edit</button>   
+    </form>  
+</p>
+{% endblock content %}
