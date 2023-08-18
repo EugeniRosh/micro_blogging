@@ -1,10 +1,9 @@
 from .authentication import AuthenticationDTO
-from .profile import CountFollowersProfileDTO, ProfileDTO
+from .profile import ProfileDTO
 from .registration import RegistrationDTO
 
 __all__ = [
     "RegistrationDTO",
     "AuthenticationDTO",
     "ProfileDTO",
-    "CountFollowersProfileDTO",
 ]

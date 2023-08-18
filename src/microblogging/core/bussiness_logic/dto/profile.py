@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
 
 @dataclass
 class ProfileDTO:
@@ -10,13 +12,7 @@ class ProfileDTO:
     password: str | None
     email: str | None
     country: str | None
-    photo: str | None
+    photo: InMemoryUploadedFile | None
     description: str | None
     date_of_birth: str | None
     date_joined: datetime | None
-
-
-@dataclass
-class CountFollowersProfileDTO:
-    count_followers: int
-    count_following: int
