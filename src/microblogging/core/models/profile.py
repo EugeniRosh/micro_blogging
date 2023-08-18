@@ -5,7 +5,7 @@ from django.db import models
 class Profiles(AbstractUser):
     email = models.CharField(max_length=100, unique=True)
     country = models.CharField(max_length=100, blank=True)
-    photo = models.CharField(max_length=100, blank=True)
+    photo = models.ImageField(upload_to="user_profile/photo/%Y/%m/%d/", blank=True)
     description = models.CharField(max_length=200, blank=True)
     date_of_birth = models.DateTimeField(null=True)
     followers = models.ManyToManyField(to="profiles", through="followers")
