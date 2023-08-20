@@ -1,6 +1,7 @@
 from .authentication import authentication_controller, logout_controller
 from .index import index_controller
 from .profile import (
+    edit_field_profile_controller,
     profile_controller,
     profile_edit_controller,
     profile_followers_controller,
@@ -17,4 +18,5 @@ __all__ = [
     "profile_following_controller",
     "profile_followers_controller",
     "profile_edit_controller",
+    "edit_field_profile_controller",
 ]
