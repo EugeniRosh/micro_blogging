@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
+from core.bussiness_logic.exeptions import GetValueError
 from core.presentation.forms import (
     EditProfileCountryForm,
     EditProfileDateOfBirthForm,
@@ -14,33 +15,35 @@ from core.presentation.forms import (
 )
 
 if TYPE_CHECKING:
-    from core.models import Profiles
     from django.forms import Form
-    from django.http import QueryDict
     from django.utils.datastructures import MultiValueDict
 
 
-def get_edit_form(data: QueryDict, files: MultiValueDict, user: Profiles) -> Form:
-    field = list(data)[-1]
-    initial = {field: getattr(user, field)}
-
+def get_edit_form(
+    field: str,
+    data: MultiValueDict = None,
+    files: MultiValueDict = None,
+    initial: dict[str, Any] | None = None,
+) -> Form:
     form: Form = None
 
-    if "first_name" in data:
+    if "first_name" == field:
         form = EditProfileFirstNameForm(data=data, initial=initial)
-    elif "last_name" in data:
+    elif "last_name" == field:
         form = EditProfileLastNameForm(data=data, initial=initial)
-    elif "username" in data:
+    elif "username" == field:
         form = EditProfileUsernameForm(data=data, initial=initial)
-    elif "email" in data:
-        form == EditProfileEmailForm(data=data, initial=initial)
-    elif "country" in data:
-        form = EditProfileCountryForm(data, initial=initial)
-    elif "photo" in files:
+    elif "email" == field:
+        form = EditProfileEmailForm(data=data, initial=initial)
+    elif "country" == field:
+        form = EditProfileCountryForm(data=data, initial=initial)
+    elif "photo" == field:
         form = EditProfilePhotoForm(data=data, files=files)
-    elif "description" in data:
+    elif "description" == field:
         form = EditProfileDescriptionForm(data=data, initial=initial)
-    elif "date_of_birth" in data:
+    elif "date_of_birth" == field:
         form = EditProfileDateOfBirthForm(data=data, initial=initial)
+    else:
+        raise GetValueError
 
     return form
