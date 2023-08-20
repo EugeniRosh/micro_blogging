@@ -2,62 +2,30 @@
 
 {% block content %}
 
- 
+{% if user.photo %}
+    <img src="{{ user.photo.url }}">
+    <a href='{% url "edit_field_profile" "photo" %}'>Edit</a>
+{% endif %}
+
 <p>
-    <form action="{{ edit_profile }}" method="post">  
-        {% csrf_token %}  
-        {{ first_name_form.as_p }}
-        <button type="submit">edit</button>   
-    </form>  
+    Name: {{ user.first_name }} <a href='{% url "edit_field_profile" "first_name" %}'>Edit</a>
 </p>
 <p>
-    <form action="{{ edit_profile }}" method="post"> 
-        {% csrf_token %}   
-        {{ last_name_form.as_p }}
-        <button type="submit">edit</button>   
-    </form>  
+    Surname: {{ user.last_name }} <a href='{% url "edit_field_profile" "last_name" %}'>Edit</a>
 </p>
 <p>
-    {{ message }}
-    <form action="{{ edit_profile }}" method="post">  
-        {% csrf_token %}  
-        {{ username_form.as_p }}
-        <button type="submit">edit</button>  
-    </form>   
+    Username: {{ user.username }} <a href='{% url "edit_field_profile" "username" %}'>Edit</a>
 </p>
 <p>
-    <form action="{{ edit_profile }}" method="post">  
-        {% csrf_token %}  
-        {{ email_form.as_p }}
-        <button type="submit">edit</button>   
-    </form>  
+    Email: {{ user.email }} <a href='{% url "edit_field_profile" "email" %}'>Edit</a>
 </p>
 <p>
-    <form action="{{ edit_profile }}" method="post">  
-        {% csrf_token %}  
-        {{ country_form.as_p }}
-        <button type="submit">edit</button>  
-    </form>  
+    Country: {{ user.country }} <a href='{% url "edit_field_profile" "country" %}'>Edit</a>
 </p>
 <p>
-    <form action="{{ edit_profile }}" method="post", enctype="multipart/form-data">  
-        {% csrf_token %}  
-        {{ photo_form.as_p }}
-        <button type="submit" name="photo">edit</button>   
-    </form>  
+    Description: {{ user.description }} <a href='{% url "edit_field_profile" "description" %}'>Edit</a>
 </p>
 <p>
-    <form action="{{ edit_profile }}" method="post">  
-        {% csrf_token %}  
-        {{ description_form.as_p }}
-        <button type="submit">edit</button>   
-    </form>  
-</p>
-<p>
-    <form action="{{ edit_profile }}" method="post">  
-        {% csrf_token %}  
-        {{ date_of_birth_form.as_p }}
-        <button type="submit">edit</button>   
-    </form>  
+    Date of birth: {{ user.date_of_birth }} <a href='{% url "edit_field_profile" "date_of_birth" %}'>Edit</a>
 </p>
 {% endblock content %}
