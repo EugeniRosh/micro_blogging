@@ -9,18 +9,12 @@
 <p>Name: {{ profile.first_name }}</p>
 <p>Surname: {{ profile.last_name }}</p>
 <p>Registration date: {{ profile.date_joined }}</p>
-{% if user.username != profile.username  %}
-    <p>Country: {{ profile.country }}</p>
-    <p>Description: {{ profile.description}}</p>
-{% endif %}
 <p>
     <a href='{% url "followers" profile.username %}'>Followers: {{ profile.count_followers }}</a>  
     <a href='{% url "following" profile.username %}'>Following: {{ profile.count_following }}</a>
 </p>
 <br><br>
-{% if user.username == profile.username  %}
-    <a href='{% url "edit_profile" %}'>Edit profile</a>
-    <br>
-    <a href="">Add new twit</a>
-{% endif %}
+<a href='{% url "edit_profile" %}'>Edit profile</a>
+<br>
+<a href="">Add new twit</a>
 {% endblock content %}
