@@ -4,7 +4,7 @@ from .common import (
     parsing_create_unique_error_message,
 )
 from .followers import get_followers, get_following
-from .profile import edit_profile, get_user_profile
+from .profile import add_follow, edit_profile, get_user_profile, remove_follow
 from .registration import regisration_user, registration_confirmations
 
 __all__ = [
@@ -19,4 +19,6 @@ __all__ = [
     "get_following",
     "get_followers",
     "edit_profile",
+    "add_follow",
+    "remove_follow",
 ]
