@@ -3,7 +3,7 @@
 {% block content %}
 {% for f in followers %}
 <p>
-    <a href='{% url "profile" f.follower__username %}'>
+    <a href='{% url "profile_users" f.follower__username %}'>
         {{ f.follower__username }}
     </a>
 </p>
