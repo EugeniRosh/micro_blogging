@@ -1,4 +1,8 @@
-from core.presentation.validators import ValidationAge
+from core.presentation.validators import (
+    ValidateFileExtension,
+    ValidateFileSize,
+    ValidationAge,
+)
 from django import forms
 
 
@@ -33,7 +37,13 @@ class EditProfileCountryForm(forms.Form):
 
 
 class EditProfilePhotoForm(forms.Form):
-    photo = forms.ImageField(label="Photo", initial='')
+    photo = forms.ImageField(
+        label="Photo",
+        validators=[
+            ValidateFileExtension(available_extensions=["jpeg", "jpg", "png"]),
+            ValidateFileSize(max_size=5_000_000),
+        ],
+    )
 
 
 class EditProfileDescriptionForm(forms.Form):
