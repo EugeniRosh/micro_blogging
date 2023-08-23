@@ -4,11 +4,13 @@ from typing import TYPE_CHECKING
 
 from core.bussiness_logic.exeptions import CreateUniqueError, GetValueError
 from core.bussiness_logic.servises import (
+    add_follow,
     edit_profile,
     get_followers,
     get_following,
     get_user_profile,
     parsing_create_unique_error_message,
+    remove_follow,
 )
 from core.presentation.common import get_edit_form
 from django.contrib.auth.decorators import login_required
@@ -22,14 +24,18 @@ if TYPE_CHECKING:
 
 @login_required()
 @require_http_methods(["GET"])
-def profile_controller(request: HttpRequest, username: str) -> HttpResponse:
+def profile_users_controller(request: HttpRequest, username: str) -> HttpResponse:
     try:
         profile = get_user_profile(username=username)
     except GetValueError:
         return redirect(to="index")
 
     context = {"title": "Profile", "profile": profile}
-    return render(request=request, template_name="profile.html", context=context)
+
+    if request.user.username == username:
+        return render(request=request, template_name="profile.html", context=context)
+
+    return render(request=request, template_name="profile_users.html", context=context)
 
 
 @login_required()
@@ -37,7 +43,6 @@ def profile_controller(request: HttpRequest, username: str) -> HttpResponse:
 def profile_following_controller(request: HttpRequest, username: str) -> HttpResponse:
     following = get_following(username=username)
     context = {"title": "Following", "following": following}
-    print(following)
     return render(
         request=request, template_name="profile_followings.html", context=context
     )
@@ -87,7 +92,6 @@ def edit_field_profile_controller(request: HttpRequest, field: str) -> HttpRespo
                         data=data,
                         files=request.FILES,
                     )
-                    request.user.refresh_from_db()
                     return redirect(to="edit_profile")
 
                 except CreateUniqueError as err:
@@ -100,3 +104,27 @@ def edit_field_profile_controller(request: HttpRequest, field: str) -> HttpRespo
     return render(
         request=request, template_name="edit_field_profile.html", context=context
     )
+
+
+@login_required()
+@require_http_methods(["GET"])
+def add_follow_controller(request: HttpRequest, username: str) -> HttpResponse:
+    if username != request.user.username:
+        try:
+            add_follow(user=request.user, user_following=username)
+        except GetValueError:
+            return HttpResponseBadRequest(content="User does not exist")
+
+    return redirect(to="profile_users", username=username)
+
+
+@login_required()
+@require_http_methods(["GET"])
+def remove_follow_controller(request: HttpRequest, username: str) -> HttpResponse:
+    if username != request.user.username:
+        try:
+            remove_follow(user=request.user, user_following=username)
+        except GetValueError:
+            return HttpResponseBadRequest(content="User does not exist")
+
+    return redirect(to="profile_users", username=username)
