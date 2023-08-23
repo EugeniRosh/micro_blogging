@@ -42,3 +42,24 @@ def edit_profile(username: str, data: QueryDict, files: MultiValueDict) -> None:
         raise CreateUniqueError(err)
 
     return None
+
+
+def add_follow(user: Profiles, user_following: str) -> None:
+    try:
+        user_following_db = Profiles.objects.get(username=user_following)
+    except Profiles.DoesNotExist:
+        raise GetValueError
+
+    user.followers.add(user_following_db)
+    return None
+
+
+def remove_follow(user: Profiles, user_following: str) -> None:
+    try:
+        user_following_db = Profiles.objects.get(username=user_following)
+    except Profiles.DoesNotExist:
+        raise GetValueError
+
+    user.followers.remove(user_following_db)
+
+    return None
