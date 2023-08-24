@@ -8,3 +8,7 @@ class ExpirationTimeError(Exception):
 
 class CreateUniqueError(Exception):
     ...
+
+
+class PaginationError(Exception):
+    ...
