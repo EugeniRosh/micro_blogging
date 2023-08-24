@@ -118,6 +118,10 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
+DATETIME_FORMAT = "j F o"
+
+USE_L10N = False
+
 USE_I18N = True
 
 USE_TZ = True

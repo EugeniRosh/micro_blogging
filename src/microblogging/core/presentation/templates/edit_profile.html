@@ -1,0 +1,31 @@
+{% extends "base.html"%}
+
+{% block content %}
+
+{% if user.photo %}
+    <img src="{{ user.photo.url }}">
+    <a href='{% url "edit_field_profile" "photo" %}'>Edit</a>
+{% endif %}
+
+<p>
+    Name: {{ user.first_name }} <a href='{% url "edit_field_profile" "first_name" %}'>Edit</a>
+</p>
+<p>
+    Surname: {{ user.last_name }} <a href='{% url "edit_field_profile" "last_name" %}'>Edit</a>
+</p>
+<p>
+    Username: {{ user.username }} <a href='{% url "edit_field_profile" "username" %}'>Edit</a>
+</p>
+<p>
+    Email: {{ user.email }} <a href='{% url "edit_field_profile" "email" %}'>Edit</a>
+</p>
+<p>
+    Country: {{ user.country }} <a href='{% url "edit_field_profile" "country" %}'>Edit</a>
+</p>
+<p>
+    Description: {{ user.description }} <a href='{% url "edit_field_profile" "description" %}'>Edit</a>
+</p>
+<p>
+    Date of birth: {{ user.date_of_birth }} <a href='{% url "edit_field_profile" "date_of_birth" %}'>Edit</a>
+</p>
+{% endblock content %}

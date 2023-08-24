@@ -73,12 +73,12 @@
     <div class="nav-container"> 
       <div class="nav-group-1"> 
         <a href='{% url "index" %}'><i class="fa fa-home"></i>Home</a> 
-        <a href='#'><i class="fa  fa-globe"></i>Trending in your country</a> 
-        <a href='#'><i class="fa fa-hashtag"></i>Tags</a> 
-        <a href='#'><i class="fa fa-bell"></i>Notifications</a> 
+        <a href=''><i class="fa  fa-globe"></i>Trending in your country</a> 
+        <a href=''><i class="fa fa-hashtag"></i>Tags</a> 
+        <a href=''><i class="fa fa-bell"></i>Notifications</a> 
       </div> 
       <div class="nav-group-2"> 
-        <a href='#'>Profile</a> 
+        <a href='{% url "profile_users" user.username %}'>Profile</a> 
         <a href='{% url "logout" %}'>Logout</a> 
       </div> 
     </div> 
@@ -87,5 +87,56 @@
 
   {% block content %} 
   {% endblock %} 
+
+  {% block view_twits%}
+    {% for t in twits.data %}
+      <p>
+        <a href='{% url "profile_users" t.profile.username %}'>{{ t.profile.username }}</a>
+        &nbsp;
+        {{ t.profile.first_name }}
+        {{ t.profile.last_name }}
+        &nbsp;
+        {{ t.created_at }}
+      </p>
+      <p>{{ t.text }}</p>
+      <p></p>
+      <p>
+        Likes: {{ t.count_like }}
+        &nbsp;
+        Reposts: {{ t.count_repost }}
+        &nbsp;
+        Answer: {{ t.count_answer }}
+      </p>
+
+      {% if t.profile == user %}
+        &nbsp;
+        <a href=''>View twits</a>
+        &nbsp;
+        <a href=''>Edit twit</a>
+        &nbsp;
+        <a href=''>Delete twit</a>   
+      {% endif %}
+      <br><br>
+    {% endfor %}
+
+    <p>
+      {% if twits.prev_page %}
+        <a href='{% url "profile_users" profile.username %}?page={{ twits.prev_page }} '>Prev</a>
+      {% endif %}
+      &nbsp;
+      {% for i in twits.navigation_num %}
+        {% if i == '…' %}
+          {{ i }}
+        {% else %}
+          <a href='{% url "profile_users" profile.username %}?page={{ i }}'>{{ i }}</a>
+        {% endif %}
+      {% endfor %}
+      &nbsp;
+      {% if twits.next_page %}
+          <a href='{% url "profile_users" profile.username %}?page={{ twits.next_page }}'>Next</a>
+      {% endif %}
+    </p>
+
+  {% endblock%}
 </body> 
 </html>

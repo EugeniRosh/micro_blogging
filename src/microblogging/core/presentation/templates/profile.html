@@ -1,0 +1,23 @@
+{% extends "base.html"%}
+
+{% block content %}
+{% if profile.photo %}
+    <img src="{{ profile.photo.url }}">
+{% endif %}
+<p></p>
+<p>Username: {{ profile.username }}</p>
+<p>Email: {{profile.email }}</p>
+<p>Name: {{ profile.first_name }}</p>
+<p>Surname: {{ profile.last_name }}</p>
+<p>Registration date: {{ profile.date_joined }}</p>
+<p>
+    <a href='{% url "followers" profile.username %}'>Followers: {{ profile.count_followers }}</a>  
+    &nbsp;
+    <a href='{% url "following" profile.username %}'>Following: {{ profile.count_following }}</a>
+</p>
+<br><br>
+<a href='{% url "edit_profile" %}'>Edit profile</a>
+<br>
+<a href=''>Add new twit</a>
+
+{% endblock content %}
