@@ -2,17 +2,24 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.exeptions import CreateUniqueError, GetValueError
+from core.bussiness_logic.exeptions import (
+    CreateUniqueError,
+    GetValueError,
+    PaginationError,
+)
 from core.bussiness_logic.servises import (
     add_follow,
     edit_profile,
     get_followers,
     get_following,
+    get_twits,
+    get_twits_reposts,
     get_user_profile,
     parsing_create_unique_error_message,
     remove_follow,
 )
 from core.presentation.common import get_edit_form
+from core.presentation.paginator import CustomPaginator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, render
@@ -26,11 +33,27 @@ if TYPE_CHECKING:
 @require_http_methods(["GET"])
 def profile_users_controller(request: HttpRequest, username: str) -> HttpResponse:
     try:
+        page_num = request.GET["page"]
+    except KeyError:
+        page_num = 1
+
+    try:
         profile = get_user_profile(username=username)
     except GetValueError:
         return redirect(to="index")
 
-    context = {"title": "Profile", "profile": profile}
+    repost_twits = get_twits_reposts(profile=profile)
+    twits = get_twits(twits_list=repost_twits, profile=profile)
+
+    paginator = CustomPaginator(max_value=20)
+    try:
+        twits_paginator = paginator.paginate(data=twits, page_num=page_num)
+    except PaginationError:
+        return HttpResponseBadRequest(
+            content="Page with provided number doesn't exist."
+        )
+
+    context = {"title": "Profile", "profile": profile, "twits": twits_paginator}
 
     if request.user.username == username:
         return render(request=request, template_name="profile.html", context=context)
