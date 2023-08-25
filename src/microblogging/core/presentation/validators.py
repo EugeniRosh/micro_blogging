@@ -52,3 +52,13 @@ class ValidateFileSize:
         if value.size > self._max_size:
             max_size_in_mb = int(self._max_size / 1_000_000)
             raise ValidationError(message=f"Max file size is {max_size_in_mb} MB")
+
+
+class ValdateMaxValue:
+    def __init__(self, max_count: int) -> None:
+        self._max_count = max_count
+
+    def __call__(self, value: str) -> None:
+        value_split = value.split('\r\n')
+        if len(value_split) > self._max_count:
+            raise ValidationError(message=f"Max value must be {self._max_count}")
