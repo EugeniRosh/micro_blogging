@@ -3,7 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.bussiness_logic.dto import TwitsDTO
-from core.bussiness_logic.servises import add_twits, convert_data_from_form_in_dacite
+from core.bussiness_logic.servises import (
+    add_twits,
+    convert_data_from_form_in_dacite,
+    view_twits,
+)
 from core.presentation.forms import TwitsForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -29,4 +33,14 @@ def add_twits_controller(request: HttpRequest) -> HttpResponse:
             form = form_twits
 
     context = {"title": "Add", "form": form}
-    return render(request=request, template_name="add_twits.html", context=context)
+    return render(request=request, template_name="twits_add.html", context=context)
+
+
+@login_required()
+@require_http_methods(["GET"])
+def view_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
+    twit, tags = view_twits(twit_id=twit_id)
+
+    context = {"title": "View twit", "twit": twit, "tags": tags}
+
+    return render(request=request, template_name="twits_view.html", context=context)
