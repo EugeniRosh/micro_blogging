@@ -43,7 +43,7 @@ def get_twits(twits_list: QuerySet, profile: Profiles) -> QuerySet:
         .annotate(
             count_like=Count("like", distinct=True),
             count_repost=Count("repost", distinct=True),
-            count_answer=Count("answer_to_twit", distinct=True),
+            count_answer=Count("answer", distinct=True),
         )
         .filter(Q(profile=profile) | Q(id__in=twits_list))
         .order_by("-created_at")
@@ -62,19 +62,24 @@ def add_twits(data: TwitsDTO, profile: Profiles) -> None:
     return None
 
 
-def view_twits(twit_id: int) -> tuple[Twits, list[Tags]]:
+def view_twits(twit_id: int) -> tuple[Twits, list[Tags], list[Twits]]:
     try:
-        twit = get_tweet_by_id(twit_id=twit_id)
+        twit: Twits = get_tweet_by_id(twit_id=twit_id)
     except Twits.DoesNotExist:
         raise GetValueError
 
+    twits_ansver = Twits.objects.select_related("answer_to_twit").filter(
+        answer_to_twit=twit
+    )
+
     tag = twit.tag.all()
     logger.info(f"Get info twit. twit: {twit.id}")
-    return twit, list(tag)
+
+    return twit, list(tag), list(twits_ansver)
 
 
 def delete_twits(twit_id: int, profile: Profiles) -> None:
-    twit = get_tweet_by_id(twit_id=twit_id)
+    twit: Twits = get_tweet_by_id(twit_id=twit_id)
 
     if twit.profile != profile:
         raise ProfileAccessError
