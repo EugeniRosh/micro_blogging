@@ -1,6 +1,5 @@
 from .authentication import authentication_controller, logout_controller
 from .index import index_controller
-from .likes import like_twits_controller
 from .profile import (
     edit_field_profile_controller,
     follow_profile_controller,
@@ -11,6 +10,8 @@ from .profile import (
 )
 from .registration import registrations_controller
 from .twits import add_twits_controller, delete_twits_controller, view_twits_controller
+from .twits_likes import like_twits_controller
+from .twits_repost import repost_twits_controller
 
 __all__ = [
     "index_controller",
@@ -28,4 +29,5 @@ __all__ = [
     "view_twits_controller",
     "delete_twits_controller",
     "like_twits_controller",
+    "repost_twits_controller",
 ]
