@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.bussiness_logic.dto import TwitsDTO
+from core.bussiness_logic.exeptions import GetValueError
 from core.bussiness_logic.servises import (
     add_twits,
     convert_data_from_form_in_dacite,
@@ -10,6 +11,7 @@ from core.bussiness_logic.servises import (
 )
 from core.presentation.forms import TwitsForm
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
@@ -39,7 +41,10 @@ def add_twits_controller(request: HttpRequest) -> HttpResponse:
 @login_required()
 @require_http_methods(["GET"])
 def view_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
-    twit, tags = view_twits(twit_id=twit_id)
+    try:
+        twit, tags = view_twits(twit_id=twit_id)
+    except GetValueError:
+        return HttpResponseBadRequest(content="Twit does not exist")
 
     context = {"title": "View twit", "twit": twit, "tags": tags}
 
