@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.bussiness_logic.dto import TwitsDTO
-from core.bussiness_logic.exeptions import GetValueError, ProfileDeleteError
+from core.bussiness_logic.exeptions import GetValueError, ProfileAccessError
 from core.bussiness_logic.servises import (
     add_twits,
     convert_data_from_form_in_dacite,
@@ -59,7 +59,7 @@ def delete_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
         delete_twits(twit_id=twit_id, profile=request.user)
     except GetValueError:
         return HttpResponseBadRequest(content="Twit does not exist")
-    except ProfileDeleteError:
+    except ProfileAccessError:
         return HttpResponseBadRequest(content="No access rights")
 
     return redirect(to="profile_users", username=request.user.username)
