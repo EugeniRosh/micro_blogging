@@ -14,5 +14,5 @@ class PaginationError(Exception):
     ...
 
 
-class ProfileDeleteError(Exception):
+class ProfileAccessError(Exception):
     ...
