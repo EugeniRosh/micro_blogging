@@ -22,9 +22,17 @@
     &nbsp;
     <a href='{% url "delete_twit" twit.id %}'>Delete twit</a>  
   {% else %}
-    <a href=''>+Like</a>
+    {% if not user in twit.like.all %}
+      <a href='{% url "like_twits" twit.id %}?operation=add'>Like</a>
+    {% else %}
+      <a href='{% url "like_twits" twit.id %}?operation=delete'>Remove like</a>
+    {% endif%}
     &nbsp;
-    <a href=''>+Repost</a>
+    {% if not user in twit.repost %}
+      <a href=''>Repost</a>
+    {% else %}
+      <a href=''>Remove repost</a>
+    {% endif %}
   {% endif %}
   
 {% endblock %}
