@@ -11,6 +11,7 @@ from .edit_profile import (
     EditProfileUsernameForm,
 )
 from .registration import RegistrationsForm
+from .twits import TwitsForm
 
 __all__ = [
     "RegistrationsForm",
@@ -24,4 +25,5 @@ __all__ = [
     "EditProfileEmailForm",
     "EditProfileDescriptionForm",
     "EditProfileDateOfBirthForm",
+    "TwitsForm",
 ]
