@@ -28,11 +28,12 @@ def print_queries() -> None:
     queries_count = 0
     for i in connection.queries:
         print(i)
+        print("-------")
         queries_count += 1
 
     print(queries_count)
     print("============")
-    return
+    return None
 
 
 def rename_in_uuid(file: InMemoryUploadedFile) -> InMemoryUploadedFile:
