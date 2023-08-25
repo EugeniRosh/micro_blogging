@@ -39,14 +39,13 @@
     &nbsp;
     Answer: {{ t.count_answer }}
   </p>
-
-  {% if t.profile == user %}
-    &nbsp;
+  &nbsp;
     <a href='{% url "view_twit" t.id %}'>View twits</a>
+  {% if t.profile == user %}
     &nbsp;
     <a href=''>Edit twit</a>
     &nbsp;
-    <a href=''>Delete twit</a>   
+    <a href='{% url "delete_twit" t.id %}'>Delete twit</a>   
   {% endif %}
   <br><br>
 {% endfor %}
