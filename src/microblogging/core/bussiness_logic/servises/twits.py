@@ -4,15 +4,15 @@ import logging
 from typing import TYPE_CHECKING
 
 from core.bussiness_logic.exeptions import GetValueError
-from core.models import Profiles, Tags, Twits
+from core.models import Twits
 from django.db.models import Count, Q
 
 from .tags import get_tegs
 
 if TYPE_CHECKING:
     from core.bussiness_logic.dto import TwitsDTO
+    from core.models import Profiles, Tags
     from django.db.models.query import QuerySet
-
 
 logger = logging.getLogger(__name__)
 
