@@ -6,7 +6,7 @@ from .common import (
 from .followers import get_followers, get_following
 from .profile import add_follow, edit_profile, get_user_profile, remove_follow
 from .registration import regisration_user, registration_confirmations
-from .twits import add_twits, get_twits, get_twits_reposts, view_twits
+from .twits import add_twits, delete_twits, get_twits, get_twits_reposts, view_twits
 
 __all__ = [
     "regisration_user",
@@ -26,4 +26,5 @@ __all__ = [
     "get_twits",
     "add_twits",
     "view_twits",
+    "delete_twits",
 ]
