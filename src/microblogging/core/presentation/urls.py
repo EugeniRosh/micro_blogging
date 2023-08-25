@@ -1,6 +1,7 @@
 from core.presentation.views import (
     add_follow_controller,
     add_twits_controller,
+    delete_twits_controller,
     edit_field_profile_controller,
     index_controller,
     profile_edit_controller,
@@ -26,6 +27,7 @@ profile_patterns = [
 twit_patterns = [
     path("add/", add_twits_controller, name="add_twit"),
     path("view/<int:twit_id>/", view_twits_controller, name="view_twit"),
+    path("delete/<int:twit_id>/", delete_twits_controller, name="delete_twit"),
 ]
 
 urlpatterns = [
