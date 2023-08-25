@@ -12,3 +12,7 @@ class CreateUniqueError(Exception):
 
 class PaginationError(Exception):
     ...
+
+
+class ProfileDeleteError(Exception):
+    ...
