@@ -10,7 +10,7 @@ from .profile import (
     remove_follow_controller,
 )
 from .registration import registrations_controller
-from .twits import add_twits_controller
+from .twits import add_twits_controller, view_twits_controller
 
 __all__ = [
     "index_controller",
@@ -26,4 +26,5 @@ __all__ = [
     "add_follow_controller",
     "remove_follow_controller",
     "add_twits_controller",
+    "view_twits_controller",
 ]
