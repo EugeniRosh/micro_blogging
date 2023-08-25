@@ -20,4 +20,54 @@
 <br>
 <a href='{% url "add_twit" %}'>Add new twit</a>
 
+{% block view_twits%}
+{% for t in twits.data %}
+  <p>
+    <a href='{% url "profile_users" t.profile.username %}'>{{ t.profile.username }}</a>
+    &nbsp;
+    {{ t.profile.first_name }}
+    {{ t.profile.last_name }}
+    &nbsp;
+    {{ t.created_at.day }}.{{ t.created_at.month }}.{{ t.created_at.year }}
+  </p>
+  <p>{{ t.text }}</p>
+  <p></p>
+  <p>
+    Likes: {{ t.count_like }}
+    &nbsp;
+    Reposts: {{ t.count_repost }}
+    &nbsp;
+    Answer: {{ t.count_answer }}
+  </p>
+
+  {% if t.profile == user %}
+    &nbsp;
+    <a href='{% url "view_twit" t.id %}'>View twits</a>
+    &nbsp;
+    <a href=''>Edit twit</a>
+    &nbsp;
+    <a href=''>Delete twit</a>   
+  {% endif %}
+  <br><br>
+{% endfor %}
+
+<p>
+  {% if twits.prev_page %}
+    <a href='{% url "profile_users" profile.username %}?page={{ twits.prev_page }} '>Prev</a>
+  {% endif %}
+  &nbsp;
+  {% for i in twits.navigation_num %}
+    {% if i == '…' %}
+      {{ i }}
+    {% else %}
+      <a href='{% url "profile_users" profile.username %}?page={{ i }}'>{{ i }}</a>
+    {% endif %}
+  {% endfor %}
+  &nbsp;
+  {% if twits.next_page %}
+      <a href='{% url "profile_users" profile.username %}?page={{ twits.next_page }}'>Next</a>
+  {% endif %}
+</p>
+
+{% endblock%}
 {% endblock content %}
