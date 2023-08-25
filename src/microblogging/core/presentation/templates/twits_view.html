@@ -28,10 +28,10 @@
       <a href='{% url "like_twits" twit.id %}?operation=delete'>Remove like</a>
     {% endif%}
     &nbsp;
-    {% if not user in twit.repost %}
-      <a href=''>Repost</a>
+    {% if not user in twit.repost.all %}
+      <a href='{% url "repost_twits" twit.id %}?operation=add'>Repost</a>
     {% else %}
-      <a href=''>Remove repost</a>
+      <a href='{% url "repost_twits" twit.id %}?operation=delete'>Remove repost</a>
     {% endif %}
   {% endif %}
   
