@@ -21,7 +21,7 @@ def get_tweet_by_id(twit_id: int) -> QuerySet:
     try:
         twit = (
             Twits.objects.select_related("profile")
-            .prefetch_related("tag")
+            .prefetch_related("tag", "like", "repost")
             .get(id=twit_id)
         )
     except Twits.DoesNotExist:
