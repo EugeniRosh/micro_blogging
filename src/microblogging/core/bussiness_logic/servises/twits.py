@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.exeptions import GetValueError, ProfileDeleteError
+from core.bussiness_logic.exeptions import GetValueError, ProfileAccessError
 from core.models import Twits
 from django.db.models import Count, Q
 
@@ -15,6 +15,19 @@ if TYPE_CHECKING:
     from django.db.models.query import QuerySet
 
 logger = logging.getLogger(__name__)
+
+
+def get_tweet_by_id(twit_id: int) -> QuerySet:
+    try:
+        twit = (
+            Twits.objects.select_related("profile")
+            .prefetch_related("tag")
+            .get(id=twit_id)
+        )
+    except Twits.DoesNotExist:
+        raise GetValueError
+
+    return twit
 
 
 def get_twits_reposts(profile: Profiles) -> QuerySet:
@@ -51,11 +64,7 @@ def add_twits(data: TwitsDTO, profile: Profiles) -> None:
 
 def view_twits(twit_id: int) -> tuple[Twits, list[Tags]]:
     try:
-        twit = (
-            Twits.objects.select_related("profile")
-            .prefetch_related("tag")
-            .get(id=twit_id)
-        )
+        twit = get_tweet_by_id(twit_id=twit_id)
     except Twits.DoesNotExist:
         raise GetValueError
 
@@ -65,13 +74,10 @@ def view_twits(twit_id: int) -> tuple[Twits, list[Tags]]:
 
 
 def delete_twits(twit_id: int, profile: Profiles) -> None:
-    try:
-        twit = Twits.objects.get(id=twit_id)
-    except Twits.DoesNotExist:
-        raise GetValueError
+    twit = get_tweet_by_id(twit_id=twit_id)
 
     if twit.profile != profile:
-        raise ProfileDeleteError
+        raise ProfileAccessError
 
     twit.delete()
 
