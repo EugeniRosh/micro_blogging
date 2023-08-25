@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from core.bussiness_logic.exeptions import GetValueError
 from core.models import Profiles, Tags, Twits
 from django.db.models import Count, Q
 
@@ -49,9 +50,14 @@ def add_twits(data: TwitsDTO, profile: Profiles) -> None:
 
 
 def view_twits(twit_id: int) -> tuple[Twits, list[Tags]]:
-    twit = (
-        Twits.objects.select_related("profile").prefetch_related("tag").get(id=twit_id)
-    )
+    try:
+        twit = (
+            Twits.objects.select_related("profile")
+            .prefetch_related("tag")
+            .get(id=twit_id)
+        )
+    except Twits.DoesNotExist:
+        raise GetValueError
 
     tag = twit.tag.all()
     logger.info(f"Get info twit. twit: {twit.id}")
