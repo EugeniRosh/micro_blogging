@@ -6,7 +6,10 @@ from typing import TYPE_CHECKING
 from core.models import Profiles, Twits
 from django.db.models import Count, Q
 
+from .tags import get_tegs
+
 if TYPE_CHECKING:
+    from core.bussiness_logic.dto import TwitsDTO
     from django.db.models.query import QuerySet
 
 
@@ -32,3 +35,13 @@ def get_twits(twits_list: QuerySet, profile: Profiles) -> QuerySet:
         .order_by("-created_at")
     )
     return twits
+
+
+def add_twits(data: TwitsDTO, profile: Profiles) -> None:
+    tags = get_tegs(tags=data.tag)
+
+    twits_db = Twits.objects.create(text=data.text, profile=profile)
+
+    twits_db.tag.set(tags)
+
+    return None
