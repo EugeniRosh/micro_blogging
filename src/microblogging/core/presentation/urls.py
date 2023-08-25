@@ -10,6 +10,7 @@ from core.presentation.views import (
     profile_following_controller,
     profile_users_controller,
     registrations_controller,
+    repost_twits_controller,
     view_twits_controller,
 )
 from django.urls import include, path
@@ -28,6 +29,7 @@ twit_patterns = [
     path("view/<int:twit_id>/", view_twits_controller, name="view_twit"),
     path("delete/<int:twit_id>/", delete_twits_controller, name="delete_twit"),
     path("like/<int:twit_id>/", like_twits_controller, name="like_twits"),
+    path("repost/<int:twit_id>/", repost_twits_controller, name="repost_twits"),
 ]
 
 urlpatterns = [
