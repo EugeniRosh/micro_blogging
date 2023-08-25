@@ -131,23 +131,19 @@ def edit_field_profile_controller(request: HttpRequest, field: str) -> HttpRespo
 
 @login_required()
 @require_http_methods(["GET"])
-def add_follow_controller(request: HttpRequest, username: str) -> HttpResponse:
+def follow_profile_controller(request: HttpRequest, username: str) -> HttpResponse:
     if username != request.user.username:
-        try:
-            add_follow(user=request.user, user_following=username)
-        except GetValueError:
-            return HttpResponseBadRequest(content="User does not exist")
-
-    return redirect(to="profile_users", username=username)
-
-
-@login_required()
-@require_http_methods(["GET"])
-def remove_follow_controller(request: HttpRequest, username: str) -> HttpResponse:
-    if username != request.user.username:
-        try:
-            remove_follow(user=request.user, user_following=username)
-        except GetValueError:
-            return HttpResponseBadRequest(content="User does not exist")
+        if request.GET["operation"] == "add":
+            try:
+                add_follow(user=request.user, user_following=username)
+            except GetValueError:
+                return HttpResponseBadRequest(content="User does not exist")
+        elif request.GET["operation"] == "remove":
+            try:
+                remove_follow(user=request.user, user_following=username)
+            except GetValueError:
+                return HttpResponseBadRequest(content="User does not exist")
+        else:
+            return HttpResponseBadRequest(content="Incorrect operation")
 
     return redirect(to="profile_users", username=username)
