@@ -4,6 +4,7 @@ from .common import (
     parsing_create_unique_error_message,
 )
 from .followers import get_followers, get_following
+from .likes import add_like_twits, delete_like_twits
 from .profile import add_follow, edit_profile, get_user_profile, remove_follow
 from .registration import regisration_user, registration_confirmations
 from .twits import add_twits, delete_twits, get_twits, get_twits_reposts, view_twits
@@ -27,4 +28,6 @@ __all__ = [
     "add_twits",
     "view_twits",
     "delete_twits",
+    "add_like_twits",
+    "delete_like_twits",
 ]
