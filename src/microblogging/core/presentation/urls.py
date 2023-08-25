@@ -9,6 +9,7 @@ from core.presentation.views import (
     profile_users_controller,
     registrations_controller,
     remove_follow_controller,
+    view_twits_controller,
 )
 from django.urls import include, path
 
@@ -24,6 +25,7 @@ profile_patterns = [
 
 twit_patterns = [
     path("add/", add_twits_controller, name="add_twit"),
+    path("view/<int:twit_id>/", view_twits_controller, name="view_twit"),
 ]
 
 urlpatterns = [
