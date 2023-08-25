@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.exeptions import GetValueError
+from core.bussiness_logic.exeptions import GetValueError, ProfileDeleteError
 from core.models import Twits
 from django.db.models import Count, Q
 
@@ -62,3 +62,17 @@ def view_twits(twit_id: int) -> tuple[Twits, list[Tags]]:
     tag = twit.tag.all()
     logger.info(f"Get info twit. twit: {twit.id}")
     return twit, list(tag)
+
+
+def delete_twits(twit_id: int, profile: Profiles) -> None:
+    try:
+        twit = Twits.objects.get(id=twit_id)
+    except Twits.DoesNotExist:
+        raise GetValueError
+
+    if twit.profile != profile:
+        raise ProfileDeleteError
+
+    twit.delete()
+
+    return None
