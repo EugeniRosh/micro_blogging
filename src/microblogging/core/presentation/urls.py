@@ -1,5 +1,6 @@
 from core.presentation.views import (
     add_follow_controller,
+    add_twits_controller,
     edit_field_profile_controller,
     index_controller,
     profile_edit_controller,
@@ -21,9 +22,13 @@ profile_patterns = [
     path("<username>/following/", profile_following_controller, name="following"),
 ]
 
+twit_patterns = [
+    path("add/", add_twits_controller, name="add_twit"),
+]
 
 urlpatterns = [
     path("", index_controller, name="index"),
     path("signup/", registrations_controller, name="registration"),
     path("profile/", include(profile_patterns)),
+    path("twit/", include(twit_patterns)),
 ]
