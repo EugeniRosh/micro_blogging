@@ -43,11 +43,16 @@ def add_twits_controller(request: HttpRequest) -> HttpResponse:
 @require_http_methods(["GET"])
 def view_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
     try:
-        twit, tags = view_twits(twit_id=twit_id)
+        twit, tags, twits_ansver = view_twits(twit_id=twit_id)
     except GetValueError:
         return HttpResponseBadRequest(content="Twit does not exist")
 
-    context = {"title": "View twit", "twit": twit, "tags": tags}
+    context = {
+        "title": "View twit",
+        "twit": twit,
+        "tags": tags,
+        "twits_ansver": twits_ansver,
+    }
 
     return render(request=request, template_name="twits_view.html", context=context)
 
