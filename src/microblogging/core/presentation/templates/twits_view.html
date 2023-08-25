@@ -1,0 +1,25 @@
+{% extends "base.html"%}
+
+{% block content %}
+  <p>
+    <a href='{% url "profile_users" twit.profile.username %}'>{{ twit.profile.username }}</a>
+    &nbsp;
+    {{ twit.profile.first_name }}
+    {{ twit.profile.last_name }}
+    &nbsp;
+    {{ twit.created_at.day }}.{{ twit.created_at.month }}.{{ twit.created_at.year }}
+  </p>
+  <p>{{ twit.text }}</p>
+  <p></p>
+  <p>
+    {% for t in tags %}
+        #{{ t.tag }}
+    {% endfor %}
+  </p>
+  {% if twit.profile == user %}
+  &nbsp;
+  <a href=''>Edit twit</a>
+  &nbsp;
+  <a href=''>Delete twit</a>   
+{% endif %}
+{% endblock %}
