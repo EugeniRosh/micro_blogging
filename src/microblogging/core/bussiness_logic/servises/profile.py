@@ -18,6 +18,15 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+def get_profile_by_username(username: str) -> QuerySet:
+    try:
+        profile = Profiles.objects.get(username=username)
+    except Profiles.DoesNotExist:
+        raise GetValueError
+
+    return profile
+
+
 def get_user_profile(username: str) -> QuerySet:
     try:
         profile = Profiles.objects.annotate(
@@ -45,21 +54,14 @@ def edit_profile(username: str, data: QueryDict, files: MultiValueDict) -> None:
 
 
 def add_follow(user: Profiles, user_following: str) -> None:
-    try:
-        user_following_db = Profiles.objects.get(username=user_following)
-    except Profiles.DoesNotExist:
-        raise GetValueError
+    user_following_db = get_profile_by_username(username=user_following)
 
     user.followers.add(user_following_db)
     return None
 
 
 def remove_follow(user: Profiles, user_following: str) -> None:
-    try:
-        user_following_db = Profiles.objects.get(username=user_following)
-    except Profiles.DoesNotExist:
-        raise GetValueError
+    user_following_db = get_profile_by_username(username=user_following)
 
     user.followers.remove(user_following_db)
-
     return None

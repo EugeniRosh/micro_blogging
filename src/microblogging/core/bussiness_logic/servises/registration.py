@@ -10,7 +10,7 @@ from core.bussiness_logic.exeptions import (
     ExpirationTimeError,
     GetValueError,
 )
-from core.models import EmailConfirmationCode, Profiles
+from core.models import EmailConfirmationCode
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
@@ -19,6 +19,7 @@ from django.db.utils import IntegrityError
 
 if TYPE_CHECKING:
     from core.bussiness_logic.dto import RegistrationDTO
+    from core.models import Profiles
 
 logger = logging.getLogger(__name__)
 

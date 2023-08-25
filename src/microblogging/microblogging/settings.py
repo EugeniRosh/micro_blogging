@@ -80,9 +80,13 @@ WSGI_APPLICATION = 'microblogging.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        'ATOMIC_REQUESTS': True,
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['DB_NAME'],
+        'HOST': os.environ['DB_HOST'],
+        'PORT': os.environ['DB_PORT'],
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASSWORD'],
+        "ATOMIC_REQUESTS": True,
     }
 }
 
@@ -137,7 +141,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = os.path.join(BASE_DIR.parents[3], 'media', 'microclogging')
+MEDIA_ROOT = os.path.join(BASE_DIR.parents[2], 'media', 'microclogging')
 
 MEDIA_URL = '/media/'
 

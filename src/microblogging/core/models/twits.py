@@ -5,7 +5,7 @@ from .base_model import BaseModel
 
 class Twits(BaseModel):
     text = models.CharField(max_length=400)
-    answer_to_twit = models.OneToOneField(
+    answer_to_twit = models.ForeignKey(
         to="twits", related_name="answer", on_delete=models.CASCADE, null=True
     )
     profile = models.ForeignKey(
