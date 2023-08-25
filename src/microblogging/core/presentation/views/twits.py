@@ -3,16 +3,17 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.bussiness_logic.dto import TwitsDTO
-from core.bussiness_logic.exeptions import GetValueError
+from core.bussiness_logic.exeptions import GetValueError, ProfileDeleteError
 from core.bussiness_logic.servises import (
     add_twits,
     convert_data_from_form_in_dacite,
+    delete_twits,
     view_twits,
 )
 from core.presentation.forms import TwitsForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
 
 if TYPE_CHECKING:
@@ -49,3 +50,16 @@ def view_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
     context = {"title": "View twit", "twit": twit, "tags": tags}
 
     return render(request=request, template_name="twits_view.html", context=context)
+
+
+@login_required()
+@require_http_methods(["GET"])
+def delete_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
+    try:
+        delete_twits(twit_id=twit_id, profile=request.user)
+    except GetValueError:
+        return HttpResponseBadRequest(content="Twit does not exist")
+    except ProfileDeleteError:
+        return HttpResponseBadRequest(content="No access rights")
+
+    return redirect(to="profile_users", username=request.user.username)
