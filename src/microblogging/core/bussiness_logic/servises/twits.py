@@ -7,7 +7,7 @@ from core.bussiness_logic.exeptions import GetValueError, ProfileAccessError
 from core.models import Twits
 from django.db.models import Count, Q
 
-from .tags import get_tegs
+from .tags import get_tags
 
 if TYPE_CHECKING:
     from core.bussiness_logic.dto import TwitsDTO
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-def get_tweet_by_id(twit_id: int) -> Twits:
+def get_twit_by_id(twit_id: int) -> Twits:
     try:
         twit: Twits = Twits.objects.select_related("profile", "answer_to_twit").get(
             id=twit_id
@@ -51,7 +51,7 @@ def get_twits(twits_list: QuerySet, profile: Profiles) -> QuerySet:
 
 
 def add_twits(data: TwitsDTO, profile: Profiles) -> Twits:
-    tags = get_tegs(tags=data.tag)
+    tags = get_tags(tags=data.tag)
 
     twit_db: Twits = Twits.objects.create(text=data.text, profile=profile)
 
@@ -62,7 +62,7 @@ def add_twits(data: TwitsDTO, profile: Profiles) -> Twits:
 
 def view_twits(twit_id: int) -> tuple[Twits, list[Tags], list[Twits]]:
     try:
-        twit: Twits = get_tweet_by_id(twit_id=twit_id)
+        twit: Twits = get_twit_by_id(twit_id=twit_id)
     except Twits.DoesNotExist:
         raise GetValueError
 
@@ -75,7 +75,7 @@ def view_twits(twit_id: int) -> tuple[Twits, list[Tags], list[Twits]]:
 
 
 def delete_twits(twit_id: int, profile: Profiles) -> None:
-    twit: Twits = get_tweet_by_id(twit_id=twit_id)
+    twit: Twits = get_twit_by_id(twit_id=twit_id)
 
     if twit.profile != profile:
         raise ProfileAccessError
@@ -96,14 +96,31 @@ def get_profile_repost_on_twit(profile: Profiles, twit: Twits) -> bool:
 
 
 def creat_answer_to_twit(twit_id: int, data: TwitsDTO, profile: Profiles) -> None:
-    twit = get_tweet_by_id(twit_id=twit_id)
+    twit = get_twit_by_id(twit_id=twit_id)
 
-    tags = get_tegs(tags=data.tag)
+    tags = get_tags(tags=data.tag)
 
     twit_answer = Twits.objects.create(
         text=data.text, answer_to_twit=twit, profile=profile
     )
 
     twit_answer.tag.set(tags)
+
+    return None
+
+
+def get_info_twit_for_edit(twit_id: int) -> tuple[Twits, list[Tags]]:
+    twit: Twits = get_twit_by_id(twit_id=twit_id)
+
+    tags = twit.tag.all()
+    return twit, list(tags)
+
+
+def edit_twit(twit_db: Twits, data: TwitsDTO) -> None:
+    twit_db.text = data.text
+    twit_db.save()
+
+    tags = get_tags(tags=data.tag)
+    twit_db.tag.set(tags)
 
     return None
