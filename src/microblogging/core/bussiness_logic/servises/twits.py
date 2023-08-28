@@ -19,11 +19,7 @@ logger = logging.getLogger(__name__)
 
 def get_tweet_by_id(twit_id: int) -> QuerySet:
     try:
-        twit = (
-            Twits.objects.select_related("profile")
-            .prefetch_related("tag", "like", "repost")
-            .get(id=twit_id)
-        )
+        twit = Twits.objects.select_related("profile", "answer_to_twit").get(id=twit_id)
     except Twits.DoesNotExist:
         raise GetValueError
 
@@ -38,7 +34,7 @@ def get_twits_reposts(profile: Profiles) -> QuerySet:
 
 def get_twits(twits_list: QuerySet, profile: Profiles) -> QuerySet:
     twits = (
-        Twits.objects.select_related("profile")
+        Twits.objects.select_related("profile", "answer_to_twit")
         .prefetch_related("like", "repost")
         .annotate(
             count_like=Count("like", distinct=True),
@@ -52,14 +48,14 @@ def get_twits(twits_list: QuerySet, profile: Profiles) -> QuerySet:
     return twits
 
 
-def add_twits(data: TwitsDTO, profile: Profiles) -> None:
+def add_twits(data: TwitsDTO, profile: Profiles) -> QuerySet:
     tags = get_tegs(tags=data.tag)
 
-    twits_db = Twits.objects.create(text=data.text, profile=profile)
+    twit_db = Twits.objects.create(text=data.text, profile=profile)
 
-    twits_db.tag.set(tags)
-    logger.info(f"Create twit. twit: {twits_db.id}")
-    return None
+    twit_db.tag.set(tags)
+    logger.info(f"Create twit. twit: {twit_db.id}")
+    return twit_db
 
 
 def view_twits(twit_id: int) -> tuple[Twits, list[Tags], list[Twits]]:
@@ -68,13 +64,11 @@ def view_twits(twit_id: int) -> tuple[Twits, list[Tags], list[Twits]]:
     except Twits.DoesNotExist:
         raise GetValueError
 
-    twits_ansver = Twits.objects.select_related("answer_to_twit").filter(
-        answer_to_twit=twit
-    )
+    twits_ansver = Twits.objects.filter(answer_to_twit=twit)
 
     tag = twit.tag.all()
-    logger.info(f"Get info twit. twit: {twit.id}")
 
+    logger.info(f"Get info twit. twit: {twit.id}")
     return twit, list(tag), list(twits_ansver)
 
 
@@ -87,3 +81,13 @@ def delete_twits(twit_id: int, profile: Profiles) -> None:
     twit.delete()
 
     return None
+
+
+def get_profile_like_on_twit(profile: Profiles, twit: Twits) -> bool:
+    like_twit: bool = twit.like.filter(pk=profile.pk).exists()
+    return like_twit
+
+
+def get_profile_repost_on_twit(profile: Profiles, twit: Twits) -> bool:
+    repost_twit: bool = twit.repost.filter(pk=profile.pk).exists()
+    return repost_twit
