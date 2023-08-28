@@ -43,6 +43,7 @@ def profile_users_controller(request: HttpRequest, username: str) -> HttpRespons
         return redirect(to="index")
 
     repost_twits = get_twits_reposts(profile=profile)
+
     twits = get_twits(twits_list=repost_twits, profile=profile)
 
     paginator = CustomPaginator(max_value=20)
@@ -138,11 +139,13 @@ def follow_profile_controller(request: HttpRequest, username: str) -> HttpRespon
                 add_follow(user=request.user, user_following=username)
             except GetValueError:
                 return HttpResponseBadRequest(content="User does not exist")
+
         elif request.GET["operation"] == "remove":
             try:
                 remove_follow(user=request.user, user_following=username)
             except GetValueError:
                 return HttpResponseBadRequest(content="User does not exist")
+
         else:
             return HttpResponseBadRequest(content="Incorrect operation")
 
