@@ -39,6 +39,7 @@ def add_twits_controller(request: HttpRequest) -> HttpResponse:
             )
             twit = add_twits(data=data, profile=request.user)
             return redirect(to="view_twit", twit_id=twit.id)
+  
         else:
             form = form_twits
 

@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from .twits import get_twit_by_id
 
+
 if TYPE_CHECKING:
     from core.models import Profiles, Twits
 

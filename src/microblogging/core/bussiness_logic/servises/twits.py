@@ -27,7 +27,7 @@ def get_twit_by_id(twit_id: int) -> Twits:
 
     return twit
 
-
+ 
 def get_twits_reposts(profile: Profiles) -> QuerySet:
     repost_twits = Twits.objects.prefetch_related("repost").filter(repost=profile)
     logger.info(f"Get twits repost. profile: {profile.id}")
@@ -71,11 +71,13 @@ def view_twits(twit_id: int) -> tuple[Twits, list[Tags], list[Twits]]:
     tag = twit.tag.all()
 
     logger.info(f"Get info twit. twit: {twit.id}")
+
     return twit, list(tag), list(twits_ansver)
 
 
 def delete_twits(twit_id: int, profile: Profiles) -> None:
     twit: Twits = get_twit_by_id(twit_id=twit_id)
+
 
     if twit.profile != profile:
         raise ProfileAccessError

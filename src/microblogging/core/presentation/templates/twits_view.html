@@ -16,6 +16,7 @@
         #{{ t.tag }}
     {% endfor %}
   </p>
+
   <a href='{% url "create_answer_to_twit" twit.id %}'>Answer</a>
   {% if twit.profile == user %}
     &nbsp;
