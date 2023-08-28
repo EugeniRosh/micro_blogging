@@ -19,7 +19,7 @@
   <a href='{% url "create_answer_to_twit" twit.id %}'>Answer</a>
   {% if twit.profile == user %}
     &nbsp;
-    <a href=''>Edit twit</a>
+    <a href='{% url "edit_twit" twit.id %}'>Edit twit</a>
     &nbsp;
     <a href='{% url "delete_twit" twit.id %}'>Delete twit</a>  
   {% else %}
