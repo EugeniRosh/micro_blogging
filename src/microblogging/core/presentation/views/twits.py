@@ -9,10 +9,13 @@ from core.bussiness_logic.servises import (
     convert_data_from_form_in_dacite,
     creat_answer_to_twit,
     delete_twits,
+    edit_twit,
+    get_info_twit_for_edit,
     get_profile_like_on_twit,
     get_profile_repost_on_twit,
     view_twits,
 )
+from core.bussiness_logic.servises.common import join_tags_in_string
 from core.presentation.forms import TwitsForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
@@ -108,4 +111,41 @@ def create_answer_to_twit_controller(
             form = form_answer
 
     context = {"title": "Create answer", "form": form}
+    return render(request=request, template_name="twits_add.html", context=context)
+
+
+@login_required()
+@require_http_methods(["GET", "POST"])
+def edit_twit_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
+    try:
+        twit_db, tags_db = get_info_twit_for_edit(twit_id=twit_id)
+    except GetValueError:
+        return HttpResponseBadRequest(content="Twit does not exist")
+
+    if twit_db.profile != request.user:
+        return redirect(to="index")
+
+    tags_string = join_tags_in_string(tags_db)
+
+    initial = {"text": twit_db.text, "tag": tags_string}
+    form = TwitsForm(initial=initial)
+
+    if request.POST:
+        form_edit = TwitsForm(data=request.POST, initial=initial)
+        if form_edit.has_changed():
+            if form_edit.is_valid():
+                data = convert_data_from_form_in_dacite(
+                    dto=TwitsDTO, data=form_edit.cleaned_data
+                )
+                edit_twit(twit_db=twit_db, data=data)
+
+                return redirect(to="view_twit", twit_id=twit_id)
+
+            else:
+                form = form_edit
+
+        else:
+            return redirect(to="view_twit", twit_id=twit_id)
+
+    context = {"title": "Edit twit", "form": form}
     return render(request=request, template_name="twits_add.html", context=context)
