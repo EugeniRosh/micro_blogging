@@ -9,7 +9,12 @@ from .profile import (
     profile_users_controller,
 )
 from .registration import registrations_controller
-from .twits import add_twits_controller, delete_twits_controller, view_twits_controller
+from .twits import (
+    add_twits_controller,
+    create_answer_to_twit_controller,
+    delete_twits_controller,
+    view_twits_controller,
+)
 from .twits_likes import like_twits_controller
 from .twits_repost import repost_twits_controller
 
@@ -30,4 +35,5 @@ __all__ = [
     "delete_twits_controller",
     "like_twits_controller",
     "repost_twits_controller",
+    "create_answer_to_twit_controller",
 ]
