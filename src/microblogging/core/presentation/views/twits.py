@@ -7,6 +7,7 @@ from core.bussiness_logic.exeptions import GetValueError, ProfileAccessError
 from core.bussiness_logic.servises import (
     add_twits,
     convert_data_from_form_in_dacite,
+    creat_answer_to_twit,
     delete_twits,
     get_profile_like_on_twit,
     get_profile_repost_on_twit,
@@ -82,3 +83,29 @@ def delete_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
         return HttpResponseBadRequest(content="No access rights")
 
     return redirect(to="profile_users", username=request.user.username)
+
+
+@login_required()
+@require_http_methods(["GET", "POST"])
+def create_answer_to_twit_controller(
+    request: HttpRequest, twit_id: int
+) -> HttpResponse:
+    form = TwitsForm()
+
+    if request.POST:
+        form_answer = TwitsForm(request.POST)
+        if form_answer.is_valid():
+            data = convert_data_from_form_in_dacite(
+                dto=TwitsDTO, data=form_answer.cleaned_data
+            )
+            try:
+                creat_answer_to_twit(twit_id=twit_id, data=data, profile=request.user)
+                return redirect(to="view_twit", twit_id=twit_id)
+            except GetValueError:
+                return HttpResponseBadRequest(content="Twit does not exist")
+
+        else:
+            form = form_answer
+
+    context = {"title": "Create answer", "form": form}
+    return render(request=request, template_name="twits_add.html", context=context)
