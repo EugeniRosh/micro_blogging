@@ -8,6 +8,8 @@ from core.bussiness_logic.servises import (
     add_twits,
     convert_data_from_form_in_dacite,
     delete_twits,
+    get_profile_like_on_twit,
+    get_profile_repost_on_twit,
     view_twits,
 )
 from core.presentation.forms import TwitsForm
@@ -31,7 +33,8 @@ def add_twits_controller(request: HttpRequest) -> HttpResponse:
             data = convert_data_from_form_in_dacite(
                 dto=TwitsDTO, data=form_twits.cleaned_data
             )
-            add_twits(data=data, profile=request.user)
+            twit = add_twits(data=data, profile=request.user)
+            return redirect(to="view_twit", twit_id=twit.id)
         else:
             form = form_twits
 
@@ -47,10 +50,21 @@ def view_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
     except GetValueError:
         return HttpResponseBadRequest(content="Twit does not exist")
 
+    profile = request.user
+
+    if profile != twit.profile:
+        like_twit = get_profile_like_on_twit(profile=profile, twit=twit)
+        repost_twit = get_profile_repost_on_twit(profile=profile, twit=twit)
+    else:
+        like_twit = None
+        repost_twit = None
+
     context = {
         "title": "View twit",
         "twit": twit,
         "tags": tags,
+        "like_twit": like_twit,
+        "repost_twit": repost_twit,
         "twits_ansver": twits_ansver,
     }
 
