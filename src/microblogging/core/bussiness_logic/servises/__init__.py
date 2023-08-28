@@ -10,6 +10,8 @@ from .twits import (
     add_twits,
     creat_answer_to_twit,
     delete_twits,
+    edit_twit,
+    get_info_twit_for_edit,
     get_profile_like_on_twit,
     get_profile_repost_on_twit,
     get_twits,
@@ -45,4 +47,6 @@ __all__ = [
     "get_profile_like_on_twit",
     "get_profile_repost_on_twit",
     "creat_answer_to_twit",
+    "edit_twit",
+    "get_info_twit_for_edit",
 ]
