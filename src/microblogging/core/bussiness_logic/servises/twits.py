@@ -48,10 +48,10 @@ def get_twits(twits_list: QuerySet, profile: Profiles) -> QuerySet:
     return twits
 
 
-def add_twits(data: TwitsDTO, profile: Profiles) -> QuerySet:
+def add_twits(data: TwitsDTO, profile: Profiles) -> Twits:
     tags = get_tegs(tags=data.tag)
 
-    twit_db = Twits.objects.create(text=data.text, profile=profile)
+    twit_db: Twits = Twits.objects.create(text=data.text, profile=profile)
 
     twit_db.tag.set(tags)
     logger.info(f"Create twit. twit: {twit_db.id}")
@@ -91,3 +91,15 @@ def get_profile_like_on_twit(profile: Profiles, twit: Twits) -> bool:
 def get_profile_repost_on_twit(profile: Profiles, twit: Twits) -> bool:
     repost_twit: bool = twit.repost.filter(pk=profile.pk).exists()
     return repost_twit
+
+
+def creat_answer_to_twit(twit_id: int, data: TwitsDTO) -> None:
+    twit = get_tweet_by_id(twit_id=twit_id)
+
+    tags = get_tegs(tags=data.tag)
+
+    twit_answer = Twits.objects.create(text=data.text, answer_to_twit=twit)
+
+    twit_answer.tag.set(tags)
+
+    return None
