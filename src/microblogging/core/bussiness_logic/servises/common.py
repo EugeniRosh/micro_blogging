@@ -11,6 +11,7 @@ from django.db import connection
 from PIL import Image
 
 if TYPE_CHECKING:
+    from core.models import Tags
     from django.utils.datastructures import MultiValueDict
 
 
@@ -66,3 +67,13 @@ def change_photo(field: str, data: MultiValueDict) -> MultiValueDict:
     file = change_file_size(file=file)
     data[field] = file
     return data
+
+
+def join_tags_in_string(tags: list[Tags]) -> str:
+    tags_string = ""
+
+    for tag in tags:
+        tags_string += tag.tag
+        tags_string += "\r\n"
+
+    return tags_string

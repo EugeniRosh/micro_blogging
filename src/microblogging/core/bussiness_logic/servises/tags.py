@@ -1,7 +1,7 @@
 from core.models import Tags
 
 
-def get_tegs(tags: str) -> list[Tags]:
+def get_tags(tags: str) -> list[Tags]:
     tags_list: list[Tags] = []
     tags_split = tags.split("\r\n")
 

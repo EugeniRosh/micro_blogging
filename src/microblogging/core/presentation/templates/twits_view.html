@@ -16,19 +16,21 @@
         #{{ t.tag }}
     {% endfor %}
   </p>
+
+  <a href='{% url "create_answer_to_twit" twit.id %}'>Answer</a>
   {% if twit.profile == user %}
     &nbsp;
-    <a href=''>Edit twit</a>
+    <a href='{% url "edit_twit" twit.id %}'>Edit twit</a>
     &nbsp;
     <a href='{% url "delete_twit" twit.id %}'>Delete twit</a>  
   {% else %}
-    {% if not user in twit.like.all %}
+    {% if not like_twit %}
       <a href='{% url "like_twits" twit.id %}?operation=add'>Like</a>
     {% else %}
       <a href='{% url "like_twits" twit.id %}?operation=delete'>Remove like</a>
     {% endif%}
     &nbsp;
-    {% if not user in twit.repost.all %}
+    {% if not repost_twit %}
       <a href='{% url "repost_twits" twit.id %}?operation=add'>Repost</a>
     {% else %}
       <a href='{% url "repost_twits" twit.id %}?operation=delete'>Remove repost</a>

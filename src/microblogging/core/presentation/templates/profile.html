@@ -42,7 +42,7 @@
     <a href='{% url "view_twit" t.id %}'>View twits</a>
   {% if t.profile == user %}
     &nbsp;
-    <a href=''>Edit twit</a>
+    <a href='{% url "edit_twit" t.id %}'>Edit twit</a>
     &nbsp;
     <a href='{% url "delete_twit" t.id %}'>Delete twit</a>   
   {% endif %}
