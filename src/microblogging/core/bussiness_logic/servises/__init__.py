@@ -6,7 +6,15 @@ from .common import (
 from .followers import get_followers, get_following
 from .profile import add_follow, edit_profile, get_user_profile, remove_follow
 from .registration import regisration_user, registration_confirmations
-from .twits import add_twits, delete_twits, get_twits, get_twits_reposts, view_twits
+from .twits import (
+    add_twits,
+    delete_twits,
+    get_profile_like_on_twit,
+    get_profile_repost_on_twit,
+    get_twits,
+    get_twits_reposts,
+    view_twits,
+)
 from .twits_likes import add_like_twits, delete_like_twits
 from .twits_repost import add_repost_twits, delete_repost_twits
 
@@ -33,4 +41,6 @@ __all__ = [
     "delete_like_twits",
     "add_repost_twits",
     "delete_repost_twits",
+    "get_profile_like_on_twit",
+    "get_profile_repost_on_twit",
 ]
