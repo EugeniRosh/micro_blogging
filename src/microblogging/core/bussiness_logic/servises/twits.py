@@ -17,9 +17,11 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-def get_tweet_by_id(twit_id: int) -> QuerySet:
+def get_tweet_by_id(twit_id: int) -> Twits:
     try:
-        twit = Twits.objects.select_related("profile", "answer_to_twit").get(id=twit_id)
+        twit: Twits = Twits.objects.select_related("profile", "answer_to_twit").get(
+            id=twit_id
+        )
     except Twits.DoesNotExist:
         raise GetValueError
 
@@ -93,12 +95,14 @@ def get_profile_repost_on_twit(profile: Profiles, twit: Twits) -> bool:
     return repost_twit
 
 
-def creat_answer_to_twit(twit_id: int, data: TwitsDTO) -> None:
+def creat_answer_to_twit(twit_id: int, data: TwitsDTO, profile: Profiles) -> None:
     twit = get_tweet_by_id(twit_id=twit_id)
 
     tags = get_tegs(tags=data.tag)
 
-    twit_answer = Twits.objects.create(text=data.text, answer_to_twit=twit)
+    twit_answer = Twits.objects.create(
+        text=data.text, answer_to_twit=twit, profile=profile
+    )
 
     twit_answer.tag.set(tags)
 
