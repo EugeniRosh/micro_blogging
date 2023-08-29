@@ -11,6 +11,7 @@ from core.management.data_for_populate_db import (
     PopulateTagsRecord,
     PopulateTwitsRecord,
 )
+from core.models import Profiles
 from django.core.management.base import BaseCommand
 
 if TYPE_CHECKING:
@@ -31,7 +32,9 @@ class Command(BaseCommand):
         parser.add_argument("value", nargs="+", type=int)
 
     def handle(self, *args: tuple[Any, ...], **options: dict[Any, Any]) -> None:
-        print('+++', type(args), type(options), "++++")
+        if Profiles.objects.all():
+            return None
+
         if options["value"]:
             value = options["value"][0]
         else:
