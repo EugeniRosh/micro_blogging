@@ -4,7 +4,13 @@ from .common import (
     parsing_create_unique_error_message,
 )
 from .followers import get_followers, get_following
-from .profile import add_follow, edit_profile, get_user_profile, remove_follow
+from .profile import (
+    add_follow,
+    edit_profile,
+    get_profile_in_follow,
+    get_user_profile,
+    remove_follow,
+)
 from .registration import regisration_user, registration_confirmations
 from .twits import (
     add_twits,
@@ -51,4 +57,5 @@ __all__ = [
     "edit_twit",
     "get_info_twit_for_edit",
     "get_twit_by_id",
+    "get_profile_in_follow",
 ]
