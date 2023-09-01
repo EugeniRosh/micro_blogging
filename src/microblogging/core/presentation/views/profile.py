@@ -23,6 +23,7 @@ from core.presentation.paginator import CustomPaginator
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, render
+from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.http import require_http_methods
 
 if TYPE_CHECKING:
@@ -133,14 +134,19 @@ def edit_field_profile_controller(request: HttpRequest, field: str) -> HttpRespo
 @login_required()
 @require_http_methods(["GET"])
 def follow_profile_controller(request: HttpRequest, username: str) -> HttpResponse:
+    try:
+        operation = request.GET["operation"]
+    except MultiValueDictKeyError:
+        return HttpResponseBadRequest(content="Invalid request")
+
     if username != request.user.username:
-        if request.GET["operation"] == "add":
+        if operation == "add":
             try:
                 add_follow(user=request.user, user_following=username)
             except GetValueError:
                 return HttpResponseBadRequest(content="User does not exist")
 
-        elif request.GET["operation"] == "remove":
+        elif operation == "remove":
             try:
                 remove_follow(user=request.user, user_following=username)
             except GetValueError:
