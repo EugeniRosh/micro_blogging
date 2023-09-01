@@ -16,7 +16,7 @@ class TwitGenerate:
 
         for i in range(value_count):
             text = " ".join(self.word_generate(word_count=randint(5, 30)))
-            text += choice([" www.djangoproject.com", "", "", ""])
+            text += choice([" https://www.djangoproject.com/", "", "", ""])
             twits_text_list.append(text)
 
         return twits_text_list
