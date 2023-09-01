@@ -12,6 +12,7 @@ from core.bussiness_logic.servises import (
     edit_profile,
     get_followers,
     get_following,
+    get_profile_in_follow,
     get_twits,
     get_twits_reposts,
     get_user_profile,
@@ -59,6 +60,9 @@ def profile_users_controller(request: HttpRequest, username: str) -> HttpRespons
 
     if request.user.username == username:
         return render(request=request, template_name="profile.html", context=context)
+
+    follow = get_profile_in_follow(profile=request.user, profile_follow=profile)
+    context.update({"follow": follow})
 
     return render(request=request, template_name="profile_users.html", context=context)
 
