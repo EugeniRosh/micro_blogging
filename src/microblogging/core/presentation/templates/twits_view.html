@@ -1,4 +1,5 @@
 {% extends "base.html"%}
+{% load add_link %}
 
 {% block content %}
   <p>
@@ -9,7 +10,7 @@
     &nbsp;
     {{ twit.created_at.day }}.{{ twit.created_at.month }}.{{ twit.created_at.year }}
   </p>
-  <p>{{ twit.text }}</p>
+  <p>{{ twit.text|text_link_filter }}</p>
   <p></p>
   <p>
     {% for t in tags %}
