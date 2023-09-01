@@ -72,6 +72,7 @@ class PopulateProfileRecord:
                     country=profile.country,
                     password=profile.password,
                     description=profile.description,
+                    is_active=True,
                 )
             )
 
