@@ -15,7 +15,9 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
+from django.core.mail import send_mail
 from django.db.utils import IntegrityError
+from django.urls import reverse
 
 if TYPE_CHECKING:
     from core.bussiness_logic.dto import RegistrationDTO
@@ -50,8 +52,15 @@ def regisration_user(data: RegistrationDTO) -> None:
         profile=create_user,
         expiration=settings.CONFIRMATION_CODE_LIFE_TIME + int(time()),
     )
-
-    registration_confirmations(confirmation_code=str(confirmation_code))
+    confirmation_url = (
+        settings.SERVER_HOST + reverse("confirm_signup") + f"?code={confirmation_code}"
+    )
+    send_mail(
+        subject="Confirm your email",
+        message=f"Please confirm email by clicking the link below:\n\n{confirmation_url}",
+        from_email=settings.DEFAULT_EMAIL_FROM,
+        recipient_list=[data.email],
+    )
     logger.info(f"Confirmation code sent. email:{data.email}. code:{confirmation_code}")
 
     return None
