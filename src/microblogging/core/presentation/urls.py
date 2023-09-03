@@ -1,5 +1,6 @@
 from core.presentation.views import (
     add_twits_controller,
+    authentication_controller,
     create_answer_to_twit_controller,
     delete_twits_controller,
     edit_field_profile_controller,
@@ -7,10 +8,12 @@ from core.presentation.views import (
     follow_profile_controller,
     index_controller,
     like_twits_controller,
+    logout_controller,
     profile_edit_controller,
     profile_followers_controller,
     profile_following_controller,
     profile_users_controller,
+    registration_confirmations_controller,
     registrations_controller,
     repost_twits_controller,
     view_twits_controller,
@@ -43,6 +46,11 @@ twit_patterns = [
 urlpatterns = [
     path("", index_controller, name="index"),
     path("signup/", registrations_controller, name="registration"),
+    path(
+        "confirm_signup/", registration_confirmations_controller, name="confirm_signup"
+    ),
+    path("authentication/", authentication_controller, name="authentication"),
+    path("logout/", logout_controller, name="logout"),
     path("profile/", include(profile_patterns)),
     path("twit/", include(twit_patterns)),
 ]
