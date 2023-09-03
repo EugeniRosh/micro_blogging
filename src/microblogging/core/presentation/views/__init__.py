@@ -8,7 +8,10 @@ from .profile import (
     profile_following_controller,
     profile_users_controller,
 )
-from .registration import registrations_controller
+from .registration import (
+    registration_confirmations_controller,
+    registrations_controller,
+)
 from .twits import (
     add_twits_controller,
     create_answer_to_twit_controller,
@@ -38,4 +41,5 @@ __all__ = [
     "repost_twits_controller",
     "create_answer_to_twit_controller",
     "edit_twit_controller",
+    "registration_confirmations_controller",
 ]
