@@ -9,6 +9,7 @@ from django.db.models import Count
 from django.db.utils import IntegrityError
 
 from .common import change_photo
+from .send_mail import send_confirmation_code
 
 if TYPE_CHECKING:
     from django.http.request import QueryDict
@@ -42,6 +43,11 @@ def get_user_profile(username: str) -> Profiles:
 def edit_profile(username: str, data: QueryDict, files: MultiValueDict) -> None:
     if "photo" in files:
         data = change_photo(field="photo", data=files)
+    elif "email" in data:
+        profile, profile_bool = Profiles.objects.update_or_create(
+            username=username, defaults={"is_active": False}
+        )
+        send_confirmation_code(user=profile, email=data["email"])
 
     try:
         Profiles.objects.update_or_create(username=username, defaults=data)
