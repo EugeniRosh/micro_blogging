@@ -3,7 +3,6 @@ from __future__ import annotations
 import logging
 from time import time
 from typing import TYPE_CHECKING
-from uuid import uuid4
 
 from core.bussiness_logic.exeptions import (
     CreateUniqueError,
@@ -11,13 +10,12 @@ from core.bussiness_logic.exeptions import (
     GetValueError,
 )
 from core.models import EmailConfirmationCode
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
-from django.core.mail import send_mail
 from django.db.utils import IntegrityError
-from django.urls import reverse
+
+from .send_mail import send_confirmation_code
 
 if TYPE_CHECKING:
     from core.bussiness_logic.dto import RegistrationDTO
@@ -44,25 +42,9 @@ def regisration_user(data: RegistrationDTO) -> None:
     role = Group.objects.get(name=data.role)
     create_user.groups.add(role)
 
+    send_confirmation_code(user=create_user, email=data.email)
+
     logger.info(f"Created user:{data.username}")
-
-    confirmation_code = uuid4()
-    EmailConfirmationCode.objects.create(
-        code=confirmation_code,
-        profile=create_user,
-        expiration=settings.CONFIRMATION_CODE_LIFE_TIME + int(time()),
-    )
-    confirmation_url = (
-        settings.SERVER_HOST + reverse("confirm_signup") + f"?code={confirmation_code}"
-    )
-    send_mail(
-        subject="Confirm your email",
-        message=f"Please confirm email by clicking the link below:\n\n{confirmation_url}",
-        from_email=settings.DEFAULT_EMAIL_FROM,
-        recipient_list=[data.email],
-    )
-    logger.info(f"Confirmation code sent. email:{data.email}. code:{confirmation_code}")
-
     return None
 
 
