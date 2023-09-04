@@ -4,6 +4,7 @@ from core.presentation.validators import (
     ValidationAge,
 )
 from django import forms
+from django.contrib.auth.password_validation import validate_password
 
 
 class EditProfileFirstNameForm(forms.Form):
@@ -23,7 +24,9 @@ class EditProfileUsernameForm(forms.Form):
 
 
 class EditProfilePasswordForm(forms.Form):
-    password = forms.CharField(label="Password", strip=True)
+    password = forms.CharField(
+        label="Password", widget=forms.PasswordInput, validators=[validate_password]
+    )
 
 
 class EditProfileEmailForm(forms.Form):
