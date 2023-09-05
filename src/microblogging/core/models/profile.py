@@ -7,7 +7,7 @@ class Profiles(AbstractUser):
     country = models.CharField(max_length=100, blank=True)
     photo = models.ImageField(upload_to="user_profile/photo/%Y/%m/%d/", blank=True)
     description = models.CharField(max_length=200, blank=True)
-    date_of_birth = models.DateTimeField(null=True)
+    date_of_birth = models.DateField(null=True)
     followers = models.ManyToManyField(to="profiles", through="followers")
     notification = models.ManyToManyField(
         to="twits", through="twitsprofilesnotifications"
