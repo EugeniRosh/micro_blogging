@@ -10,7 +10,7 @@ from core.bussiness_logic.exeptions import (
 )
 from core.bussiness_logic.servises import (
     convert_data_from_form_in_dacite,
-    parsing_create_unique_error_message,
+    parsing_the_unique_creation_error_in_postgres,
     regisration_user,
     registration_confirmations,
 )
@@ -45,7 +45,7 @@ def registrations_controller(request: HttpRequest) -> HttpResponse:
                 )
 
             except CreateUniqueError as err:
-                field = parsing_create_unique_error_message(err=err)
+                field = parsing_the_unique_creation_error_in_postgres(err=err)
                 form = form_registration
                 form.add_error(field=field, error=f"{field} already exists")
 
