@@ -25,7 +25,6 @@ class PopulateTagsRecord:
     def __call__(self, value_count: int) -> list[Tags]:
         tags_list = []
 
-        value_count *= 2
         words = self.tags_generate(word_count=value_count)
         for word in words:
             tags_list.append(Tags(tag=word))
