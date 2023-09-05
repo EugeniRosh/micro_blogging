@@ -100,6 +100,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 9,
+        },
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -172,3 +175,14 @@ LOGGING = {
 }
 
 CONFIRMATION_CODE_LIFE_TIME = 3600
+
+
+EMAIL_HOST = os.environ["EMAIL_HOST"]
+EMAIL_PORT = os.environ["EMAIL_PORT"]
+EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
+EMAIL_USE_SSL = os.environ["EMAIL_USE_SSL"]
+EMAIL_BACKEND = os.environ["EMAIL_BACKEND"]
+DEFAULT_EMAIL_FROM = os.environ["DEFAULT_EMAIL_FROM"]
+
+SERVER_HOST = os.environ["SERVER_HOST"]
