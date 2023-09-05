@@ -27,11 +27,15 @@ class ProfileGenerate:
             name = self.name_generate()
             surname = self.surname_generate()
             description = " ".join(self.word_generate(word_count=randint(5, 15)))
+
+            if len(description) > 200:
+                description = description[:200]
+
             date_of_birth = datetime(
                 year=randint(1968, 2004), month=randint(1, 12), day=randint(1, 28)
             )
             username = name + str(uuid4())[:6]
-            email = "www." + username + "@gmail.com"
+            email = username + "@gmail.com"
             country = self.country_generate().lower()
 
             profile_list.append(
