@@ -16,7 +16,7 @@ from core.bussiness_logic.servises import (
     get_twits,
     get_twits_reposts,
     get_user_profile,
-    parsing_create_unique_error_message,
+    parsing_the_unique_creation_error_in_postgres,
     remove_follow,
 )
 from core.presentation.common import get_edit_form
@@ -124,7 +124,7 @@ def edit_field_profile_controller(request: HttpRequest, field: str) -> HttpRespo
                     return redirect(to="edit_profile")
 
                 except CreateUniqueError as err:
-                    field = parsing_create_unique_error_message(err=err)
+                    field = parsing_the_unique_creation_error_in_postgres(err=err)
                     form.add_error(field=field, error=f"{field} already exists")
         else:
             redirect(to="edit_profile")
