@@ -1,12 +1,12 @@
 {% extends "base.html"%}
 
 {% block content %}
-
+<p>
 {% if user.photo %}
     <img src="{{ user.photo.url }}">
-    <a href='{% url "edit_field_profile" "photo" %}'>Edit</a>
 {% endif %}
-
+    <a href='{% url "edit_field_profile" "photo" %}'>Photo Edit</a>
+</p>
 <p>
     Name: {{ user.first_name }} <a href='{% url "edit_field_profile" "first_name" %}'>Edit</a>
 </p>
