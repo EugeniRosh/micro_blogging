@@ -62,7 +62,7 @@ class EditProfileDescriptionForm(forms.Form):
 class EditProfileDateOfBirthForm(forms.Form):
     date_of_birth = forms.DateTimeField(
         label="Date of birth",
-        help_text="format: 01.01.0001",
+        help_text="format: 31.12.1999",
         input_formats=["%d.%m.%Y"],
         validators=[ValidationAge(min_age=18)],
     )
