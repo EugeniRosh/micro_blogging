@@ -32,9 +32,9 @@
     {% endif%}
     &nbsp;
     {% if not repost_twit %}
-      <a href='{% url "repost_twits" twit.id %}?operation=add'>Repost</a>
+      <a href='{% url "add_repost_twits" twit.id %}'>Repost</a>
     {% else %}
-      <a href='{% url "repost_twits" twit.id %}?operation=delete'>Remove repost</a>
+      <a href='{% url "remove_repost_twits" twit.id %}'>Remove repost</a>
     {% endif %}
   {% endif %}
   <h3>Answer</h3>
