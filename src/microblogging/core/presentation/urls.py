@@ -7,6 +7,7 @@ from core.presentation.views import (
     edit_field_profile_controller,
     edit_twit_controller,
     follow_profile_controller,
+    follower_profile_removal_controller,
     index_controller,
     like_twits_controller,
     logout_controller,
@@ -26,7 +27,12 @@ profile_patterns = [
     path("edit/", profile_edit_controller, name="edit_profile"),
     path("edit/<field>", edit_field_profile_controller, name="edit_field_profile"),
     path("<username>/", profile_users_controller, name="profile_users"),
-    path("<username>/add_follow/", follow_profile_controller, name="follow"),
+    path("<username>/add_follow/", follow_profile_controller, name="add_follow"),
+    path(
+        "<username>/remove_follow/",
+        follower_profile_removal_controller,
+        name="remove_follow",
+    ),
     path("<username>/followers/", profile_followers_controller, name="followers"),
     path("<username>/following/", profile_following_controller, name="following"),
 ]
