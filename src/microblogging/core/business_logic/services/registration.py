@@ -4,7 +4,7 @@ import logging
 from time import time
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.exeptions import (
+from core.business_logic.exceptions import (
     CreateUniqueError,
     ExpirationTimeError,
     GetValueError,
@@ -15,10 +15,10 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from django.db.utils import IntegrityError
 
-from .send_mail import send_confirmation_code
+from .send_an_mail import send_confirmation_code
 
 if TYPE_CHECKING:
-    from core.bussiness_logic.dto import RegistrationDTO
+    from core.business_logic.dto import RegistrationDTO
     from core.models import Profiles
 
 logger = logging.getLogger(__name__)

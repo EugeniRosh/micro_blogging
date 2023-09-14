@@ -1,7 +1,7 @@
 from typing import Iterable
 
-from core.bussiness_logic.dto import PaginationPageDTO
-from core.bussiness_logic.exeptions import PaginationError
+from core.business_logic.dto import PaginationPageDTO
+from core.business_logic.exceptions import PaginationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 

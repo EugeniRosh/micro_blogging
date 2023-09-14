@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.dto import AuthenticationDTO
-from core.bussiness_logic.exeptions import GetValueError
-from core.bussiness_logic.servises import (
+from core.business_logic.dto import AuthenticationDTO
+from core.business_logic.exceptions import GetValueError
+from core.business_logic.services import (
     authentication_user,
     convert_data_from_form_in_dacite,
     logout_user,

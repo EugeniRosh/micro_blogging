@@ -17,9 +17,9 @@
 </p>
 <br><br>
 {% if not follow %}
-    <a href='{% url "follow" profile.username %}?operation=add'>Follow</a>
+    <a href='{% url "add_follow" profile.username %}'>Follow</a>
 {% else %}
-    <a href='{% url "follow" profile.username %}?operation=remove'>Unfollow</a>
+    <a href='{% url "remove_follow" profile.username %}'>Unfollow</a>
 {% endif%}
 {% block view_twits%}
 {% for t in twits.data %}

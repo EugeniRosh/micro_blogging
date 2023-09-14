@@ -3,14 +3,14 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.exeptions import GetValueError, ProfileAccessError
+from core.business_logic.exceptions import GetValueError, ProfileAccessError
 from core.models import Twits
 from django.db.models import Count, Q
 
 from .tags import get_tags
 
 if TYPE_CHECKING:
-    from core.bussiness_logic.dto import TwitsDTO
+    from core.business_logic.dto import TwitsDTO
     from core.models import Profiles, Tags
     from django.db.models.query import QuerySet
 
@@ -27,8 +27,8 @@ def get_twit_by_id(twit_id: int) -> Twits:
 
     return twit
 
- 
-def get_twits_reposts(profile: Profiles) -> QuerySet:
+
+def get_repost_twit(profile: Profiles) -> QuerySet:
     repost_twits = Twits.objects.prefetch_related("repost").filter(repost=profile)
     logger.info(f"Get twits repost. profile: {profile.id}")
     return repost_twits
@@ -50,7 +50,7 @@ def get_twits(twits_list: QuerySet, profile: Profiles) -> QuerySet:
     return twits
 
 
-def add_twits(data: TwitsDTO, profile: Profiles) -> Twits:
+def add_a_twits(data: TwitsDTO, profile: Profiles) -> Twits:
     tags = get_tags(tags=data.tag)
 
     twit_db: Twits = Twits.objects.create(text=data.text, profile=profile)
@@ -58,6 +58,21 @@ def add_twits(data: TwitsDTO, profile: Profiles) -> Twits:
     twit_db.tag.set(tags)
     logger.info(f"Create twit. twit: {twit_db.id}")
     return twit_db
+
+
+def get_tweet_for_viewing(
+    twit_id: int, profile: Profiles
+) -> tuple[Twits, list[Tags], list[Twits], bool | None, bool | None]:
+    twit, tags, twits_ansver = view_twits(twit_id=twit_id)
+
+    if profile != twit.profile:
+        like_twit = get_profile_like_on_twit(profile=profile, twit=twit)
+        repost_twit = get_profile_repost_on_twit(profile=profile, twit=twit)
+    else:
+        like_twit = None
+        repost_twit = None
+
+    return twit, tags, twits_ansver, like_twit, repost_twit
 
 
 def view_twits(twit_id: int) -> tuple[Twits, list[Tags], list[Twits]]:
@@ -77,7 +92,6 @@ def view_twits(twit_id: int) -> tuple[Twits, list[Tags], list[Twits]]:
 
 def delete_twits(twit_id: int, profile: Profiles) -> None:
     twit: Twits = get_twit_by_id(twit_id=twit_id)
-
 
     if twit.profile != profile:
         raise ProfileAccessError

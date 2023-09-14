@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from core.bussiness_logic.exeptions import GetValueError
+from core.business_logic.exceptions import GetValueError
 from core.presentation.forms import (
     EditProfileCountryForm,
     EditProfileDateOfBirthForm,

@@ -3,11 +3,11 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.exeptions import GetValueError
+from core.business_logic.exceptions import GetValueError
 from django.contrib.auth import authenticate, login, logout
 
 if TYPE_CHECKING:
-    from core.bussiness_logic.dto import AuthenticationDTO
+    from core.business_logic.dto import AuthenticationDTO
     from django.http import HttpRequest
 
 logger = logging.getLogger(__name__)
