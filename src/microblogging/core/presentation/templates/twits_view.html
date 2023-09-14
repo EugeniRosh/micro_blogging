@@ -26,9 +26,9 @@
     <a href='{% url "delete_twit" twit.id %}'>Delete twit</a>  
   {% else %}
     {% if not like_twit %}
-      <a href='{% url "like_twits" twit.id %}?operation=add'>Like</a>
+      <a href='{% url "add_like_twits" twit.id %}'>Like</a>
     {% else %}
-      <a href='{% url "like_twits" twit.id %}?operation=delete'>Remove like</a>
+      <a href='{% url "remove_like_twits" twit.id %}'>Remove like</a>
     {% endif%}
     &nbsp;
     {% if not repost_twit %}
