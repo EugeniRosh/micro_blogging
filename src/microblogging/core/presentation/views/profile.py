@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.exeptions import (
+from core.business_logic.exceptions import (
     CreateUniqueError,
     GetValueError,
     PaginationError,
 )
-from core.bussiness_logic.servises import (
+from core.business_logic.services import (
     add_follow,
     edit_profile,
     get_all_followers,

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.exeptions import GetValueError
-from core.bussiness_logic.servises import delete_repost_twits, repost_the_twit
+from core.business_logic.exceptions import GetValueError
+from core.business_logic.services import delete_repost_twits, repost_the_twit
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect

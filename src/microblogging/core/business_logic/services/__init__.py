@@ -22,6 +22,7 @@ from .twits import (
     get_profile_like_on_twit,
     get_profile_repost_on_twit,
     get_repost_twit,
+    get_tweet_for_viewing,
     get_twit_by_id,
     get_twits,
     view_twits,
@@ -59,4 +60,5 @@ __all__ = [
     "get_twit_by_id",
     "get_profile_in_follow",
     "get_profile",
+    "get_tweet_for_viewing",
 ]

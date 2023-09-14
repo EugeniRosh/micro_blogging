@@ -3,13 +3,13 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.exeptions import CreateUniqueError, GetValueError
+from core.business_logic.exceptions import CreateUniqueError, GetValueError
 from core.models import Profiles
 from django.db.models import Count
 from django.db.utils import IntegrityError
 
 from .common import change_photo
-from .send_mail import send_confirmation_code
+from .send_an_mail import send_confirmation_code
 from .twits import get_repost_twit, get_twits
 
 if TYPE_CHECKING:

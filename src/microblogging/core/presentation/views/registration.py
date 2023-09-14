@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from core.bussiness_logic.dto import RegistrationDTO
-from core.bussiness_logic.exeptions import (
+from core.business_logic.dto import RegistrationDTO
+from core.business_logic.exceptions import (
     CreateUniqueError,
     ExpirationTimeError,
     GetValueError,
 )
-from core.bussiness_logic.servises import (
+from core.business_logic.services import (
     convert_data_from_form_in_dacite,
     parsing_the_unique_creation_error_in_postgres,
     regisration_user,
