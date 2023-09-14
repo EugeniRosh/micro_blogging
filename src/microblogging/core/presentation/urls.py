@@ -17,6 +17,7 @@ from core.presentation.views import (
     registration_confirmations_controller,
     registrations_controller,
     repost_twits_controller,
+    twit_repost_deletion_controller,
     view_twits_controller,
 )
 from django.urls import include, path
@@ -46,7 +47,12 @@ twit_patterns = [
         deleting_a_twit_likes_controller,
         name="remove_like_twits",
     ),
-    path("repost/<int:twit_id>/", repost_twits_controller, name="repost_twits"),
+    path("add_repost/<int:twit_id>/", repost_twits_controller, name="add_repost_twits"),
+    path(
+        "remove_repost/<int:twit_id>/",
+        twit_repost_deletion_controller,
+        name="remove_repost_twits",
+    ),
 ]
 
 urlpatterns = [
