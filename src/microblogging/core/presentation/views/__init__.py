@@ -20,7 +20,7 @@ from .twits import (
     view_twits_controller,
 )
 from .twits_likes import deleting_a_twit_likes_controller, like_twits_controller
-from .twits_repost import repost_twits_controller
+from .twits_repost import repost_twits_controller, twit_repost_deletion_controller
 
 __all__ = [
     "index_controller",
@@ -43,4 +43,5 @@ __all__ = [
     "edit_twit_controller",
     "registration_confirmations_controller",
     "deleting_a_twit_likes_controller",
+    "twit_repost_deletion_controller",
 ]
