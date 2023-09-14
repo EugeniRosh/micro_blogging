@@ -3,6 +3,7 @@ from .index import index_controller
 from .profile import (
     edit_field_profile_controller,
     follow_profile_controller,
+    follower_profile_removal_controller,
     profile_edit_controller,
     profile_followers_controller,
     profile_following_controller,
@@ -44,4 +45,5 @@ __all__ = [
     "registration_confirmations_controller",
     "deleting_a_twit_likes_controller",
     "twit_repost_deletion_controller",
+    "follower_profile_removal_controller",
 ]
