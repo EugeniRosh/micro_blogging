@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.bussiness_logic.exeptions import GetValueError
-from core.bussiness_logic.servises import add_repost_twits, delete_repost_twits
+from core.bussiness_logic.servises import delete_repost_twits, repost_the_twit
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect
@@ -15,9 +15,11 @@ if TYPE_CHECKING:
 
 @login_required()
 @require_http_methods(["GET"])
-def repost_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
+def adding_a_tweet_repost_controller(
+    request: HttpRequest, twit_id: int
+) -> HttpResponse:
     try:
-        add_repost_twits(twit_id=twit_id, profile=request.user)
+        repost_the_twit(twit_id=twit_id, profile=request.user)
     except GetValueError:
         return HttpResponseBadRequest(content="Twit does not exist")
 

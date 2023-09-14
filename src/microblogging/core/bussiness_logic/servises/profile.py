@@ -10,8 +10,10 @@ from django.db.utils import IntegrityError
 
 from .common import change_photo
 from .send_mail import send_confirmation_code
+from .twits import get_repost_twit, get_twits
 
 if TYPE_CHECKING:
+    from django.db.models.query import QuerySet
     from django.http.request import QueryDict
     from django.utils.datastructures import MultiValueDict
 
@@ -25,6 +27,13 @@ def get_profile_by_username(username: str) -> Profiles:
         raise GetValueError
 
     return profile
+
+
+def get_profile(username: str) -> tuple[Profiles, QuerySet]:
+    profile = get_user_profile(username=username)
+    repost_twits = get_repost_twit(profile=profile)
+    twits = get_twits(twits_list=repost_twits, profile=profile)
+    return profile, twits
 
 
 def get_user_profile(username: str) -> Profiles:

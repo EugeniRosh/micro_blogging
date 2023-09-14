@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from core.bussiness_logic.dto import TwitsDTO
 from core.bussiness_logic.exeptions import GetValueError, ProfileAccessError
 from core.bussiness_logic.servises import (
-    add_twits,
+    add_a_twits,
     convert_data_from_form_in_dacite,
     creat_answer_to_twit,
     delete_twits,
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 
 @login_required()
 @require_http_methods(["GET", "POST"])
-def add_twits_controller(request: HttpRequest) -> HttpResponse:
+def add_a_twits_controller(request: HttpRequest) -> HttpResponse:
     form = TwitsForm()
 
     if request.POST:
@@ -37,7 +37,7 @@ def add_twits_controller(request: HttpRequest) -> HttpResponse:
             data = convert_data_from_form_in_dacite(
                 dto=TwitsDTO, data=form_twits.cleaned_data
             )
-            twit = add_twits(data=data, profile=request.user)
+            twit = add_a_twits(data=data, profile=request.user)
             return redirect(to="view_twit", twit_id=twit.id)
 
         else:
@@ -78,7 +78,7 @@ def view_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
 
 @login_required()
 @require_http_methods(["GET"])
-def delete_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
+def twit_deletion_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
     try:
         delete_twits(twit_id=twit_id, profile=request.user)
     except GetValueError:

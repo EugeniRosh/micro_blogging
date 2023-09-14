@@ -27,8 +27,8 @@ def get_twit_by_id(twit_id: int) -> Twits:
 
     return twit
 
- 
-def get_twits_reposts(profile: Profiles) -> QuerySet:
+
+def get_repost_twit(profile: Profiles) -> QuerySet:
     repost_twits = Twits.objects.prefetch_related("repost").filter(repost=profile)
     logger.info(f"Get twits repost. profile: {profile.id}")
     return repost_twits
@@ -50,7 +50,7 @@ def get_twits(twits_list: QuerySet, profile: Profiles) -> QuerySet:
     return twits
 
 
-def add_twits(data: TwitsDTO, profile: Profiles) -> Twits:
+def add_a_twits(data: TwitsDTO, profile: Profiles) -> Twits:
     tags = get_tags(tags=data.tag)
 
     twit_db: Twits = Twits.objects.create(text=data.text, profile=profile)
@@ -77,7 +77,6 @@ def view_twits(twit_id: int) -> tuple[Twits, list[Tags], list[Twits]]:
 
 def delete_twits(twit_id: int, profile: Profiles) -> None:
     twit: Twits = get_twit_by_id(twit_id=twit_id)
-
 
     if twit.profile != profile:
         raise ProfileAccessError

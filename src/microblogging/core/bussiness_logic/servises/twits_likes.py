@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from core.models import Profiles, Twits
 
 
-def add_like_twits(twit_id: int, profile: Profiles) -> None:
+def like_a_twit(twit_id: int, profile: Profiles) -> None:
     twit: Twits = get_twit_by_id(twit_id=twit_id)
 
     if twit.profile == profile:
@@ -18,7 +18,7 @@ def add_like_twits(twit_id: int, profile: Profiles) -> None:
     return None
 
 
-def delete_like_twits(twit_id: int, profile: Profiles) -> None:
+def deleting_a_twit_likes(twit_id: int, profile: Profiles) -> None:
     twit: Twits = get_twit_by_id(twit_id=twit_id)
 
     if twit.profile == profile:

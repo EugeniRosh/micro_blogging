@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from core.bussiness_logic.exeptions import GetValueError
-from core.bussiness_logic.servises import add_like_twits, delete_like_twits
+from core.bussiness_logic.servises import deleting_a_twit_likes, like_a_twit
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect
@@ -15,9 +15,9 @@ if TYPE_CHECKING:
 
 @login_required()
 @require_http_methods(["GET"])
-def like_twits_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
+def add_like_the_twit_controller(request: HttpRequest, twit_id: int) -> HttpResponse:
     try:
-        add_like_twits(twit_id=twit_id, profile=request.user)
+        like_a_twit(twit_id=twit_id, profile=request.user)
     except GetValueError:
         return HttpResponseBadRequest(content="Twit does not exist")
 
@@ -30,7 +30,7 @@ def deleting_a_twit_likes_controller(
     request: HttpRequest, twit_id: int
 ) -> HttpResponse:
     try:
-        delete_like_twits(twit_id=twit_id, profile=request.user)
+        deleting_a_twit_likes(twit_id=twit_id, profile=request.user)
     except GetValueError:
         return HttpResponseBadRequest(content="Twit does not exist")
 

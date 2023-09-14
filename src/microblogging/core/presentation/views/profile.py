@@ -10,12 +10,10 @@ from core.bussiness_logic.exeptions import (
 from core.bussiness_logic.servises import (
     add_follow,
     edit_profile,
-    get_followers,
-    get_following,
+    get_all_followers,
+    get_all_following,
+    get_profile,
     get_profile_in_follow,
-    get_twits,
-    get_twits_reposts,
-    get_user_profile,
     parsing_the_unique_creation_error_in_postgres,
     remove_follow,
 )
@@ -39,13 +37,9 @@ def profile_users_controller(request: HttpRequest, username: str) -> HttpRespons
         page_num = 1
 
     try:
-        profile = get_user_profile(username=username)
+        profile, twits = get_profile(username=username)
     except GetValueError:
         return redirect(to="index")
-
-    repost_twits = get_twits_reposts(profile=profile)
-
-    twits = get_twits(twits_list=repost_twits, profile=profile)
 
     paginator = CustomPaginator(max_value=20)
     try:
@@ -68,8 +62,10 @@ def profile_users_controller(request: HttpRequest, username: str) -> HttpRespons
 
 @login_required()
 @require_http_methods(["GET"])
-def profile_following_controller(request: HttpRequest, username: str) -> HttpResponse:
-    following = get_following(username=username)
+def receiving_profile_followings_controller(
+    request: HttpRequest, username: str
+) -> HttpResponse:
+    following = get_all_following(username=username)
     context = {"title": "Following", "following": following}
     return render(
         request=request, template_name="profile_followings.html", context=context
@@ -78,8 +74,10 @@ def profile_following_controller(request: HttpRequest, username: str) -> HttpRes
 
 @login_required()
 @require_http_methods(["GET"])
-def profile_followers_controller(request: HttpRequest, username: str) -> HttpResponse:
-    followers = get_followers(username=username)
+def get_followers_profile_controller(
+    request: HttpRequest, username: str
+) -> HttpResponse:
+    followers = get_all_followers(username=username)
     context = {"title": "Followers", "followers": followers}
     return render(
         request=request, template_name="profile_followers.html", context=context
@@ -136,7 +134,9 @@ def edit_field_profile_controller(request: HttpRequest, field: str) -> HttpRespo
 
 @login_required()
 @require_http_methods(["GET"])
-def follow_profile_controller(request: HttpRequest, username: str) -> HttpResponse:
+def adding_a_follower_profile_controller(
+    request: HttpRequest, username: str
+) -> HttpResponse:
     if username != request.user.username:
         try:
             add_follow(user=request.user, user_following=username)
