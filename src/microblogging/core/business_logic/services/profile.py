@@ -29,11 +29,17 @@ def get_profile_by_username(username: str) -> Profiles:
     return profile
 
 
-def get_profile(username: str) -> tuple[Profiles, QuerySet]:
+def get_profile(username: str) -> tuple[Profiles, QuerySet, bool]:
     profile = get_user_profile(username=username)
+    twits = get_twits_and_reposts(profile=profile)
+    follow = get_profile_in_follow(profile=profile, profile_follow=profile)
+    return profile, twits, follow
+
+
+def get_twits_and_reposts(profile: Profiles) -> QueryDict:
     repost_twits = get_repost_twit(profile=profile)
     twits = get_twits(twits_list=repost_twits, profile=profile)
-    return profile, twits
+    return twits
 
 
 def get_user_profile(username: str) -> Profiles:

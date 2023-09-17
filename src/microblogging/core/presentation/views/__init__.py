@@ -5,6 +5,7 @@ from .profile import (
     edit_field_profile_controller,
     follower_profile_removal_controller,
     get_followers_profile_controller,
+    my_profile_controller,
     profile_edit_controller,
     profile_users_controller,
     receiving_profile_followings_controller,
@@ -49,4 +50,5 @@ __all__ = [
     "deleting_a_twit_likes_controller",
     "twit_repost_deletion_controller",
     "follower_profile_removal_controller",
+    "my_profile_controller",
 ]
