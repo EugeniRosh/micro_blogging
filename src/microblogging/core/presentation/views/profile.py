@@ -13,7 +13,7 @@ from core.business_logic.services import (
     get_all_followers,
     get_all_following,
     get_profile,
-    get_profile_in_follow,
+    get_twits_and_reposts,
     parsing_the_unique_creation_error_in_postgres,
     remove_follow,
 )
@@ -31,13 +31,16 @@ if TYPE_CHECKING:
 @login_required()
 @require_http_methods(["GET"])
 def profile_users_controller(request: HttpRequest, username: str) -> HttpResponse:
+    if request.user.username == username:
+        return redirect(to="my_profile")
+
     try:
         page_num = request.GET["page"]
     except KeyError:
         page_num = 1
 
     try:
-        profile, twits = get_profile(username=username)
+        profile, twits, follow = get_profile(username=username)
     except GetValueError:
         return redirect(to="index")
 
@@ -49,15 +52,37 @@ def profile_users_controller(request: HttpRequest, username: str) -> HttpRespons
             content="Page with provided number doesn't exist."
         )
 
-    context = {"title": "Profile", "profile": profile, "twits": twits_paginator}
-
-    if request.user.username == username:
-        return render(request=request, template_name="profile.html", context=context)
-
-    follow = get_profile_in_follow(profile=request.user, profile_follow=profile)
-    context.update({"follow": follow})
-
+    context = {
+        "title": "Profile",
+        "profile": profile,
+        "twits": twits_paginator,
+        "follow": follow,
+    }
     return render(request=request, template_name="profile_users.html", context=context)
+
+
+@login_required()
+@require_http_methods(["GET"])
+def my_profile_controller(request: HttpRequest) -> HttpResponse:
+    profile = request.user
+
+    try:
+        page_num = request.GET["page"]
+    except KeyError:
+        page_num = 1
+
+    twits = get_twits_and_reposts(profile=profile)
+
+    paginator = CustomPaginator(max_value=20)
+    try:
+        twits_paginator = paginator.paginate(data=twits, page_num=page_num)
+    except PaginationError:
+        return HttpResponseBadRequest(
+            content="Page with provided number doesn't exist."
+        )
+
+    context = {"title": "Profile", "profile": profile, "twits": twits_paginator}
+    return render(request=request, template_name="profile.html", context=context)
 
 
 @login_required()
