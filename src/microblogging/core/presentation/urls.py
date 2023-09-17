@@ -12,6 +12,7 @@ from core.presentation.views import (
     get_followers_profile_controller,
     index_controller,
     logout_controller,
+    my_profile_controller,
     profile_edit_controller,
     profile_users_controller,
     receiving_profile_followings_controller,
@@ -24,6 +25,7 @@ from core.presentation.views import (
 from django.urls import include, path
 
 profile_patterns = [
+    path("", my_profile_controller, name="my_profile"),
     path("edit/", profile_edit_controller, name="edit_profile"),
     path("edit/<field>", edit_field_profile_controller, name="edit_field_profile"),
     path("<username>/", profile_users_controller, name="profile_users"),
