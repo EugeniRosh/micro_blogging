@@ -12,8 +12,8 @@ from core.business_logic.services import (
     edit_profile,
     get_all_followers,
     get_all_following,
+    get_my_profile,
     get_profile,
-    get_twits_and_reposts,
     parsing_the_unique_creation_error_in_postgres,
     remove_follow,
 )
@@ -64,14 +64,12 @@ def profile_users_controller(request: HttpRequest, username: str) -> HttpRespons
 @login_required()
 @require_http_methods(["GET"])
 def my_profile_controller(request: HttpRequest) -> HttpResponse:
-    profile = request.user
-
     try:
         page_num = request.GET["page"]
     except KeyError:
         page_num = 1
 
-    twits = get_twits_and_reposts(profile=profile)
+    profile, twits = get_my_profile(profile=request.user)
 
     paginator = CustomPaginator(max_value=20)
     try:
