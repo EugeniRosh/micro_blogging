@@ -9,6 +9,7 @@ from .profile import (
     edit_profile,
     get_profile,
     get_profile_in_follow,
+    get_twits_and_reposts,
     get_user_profile,
     remove_follow,
 )
@@ -61,4 +62,5 @@ __all__ = [
     "get_profile_in_follow",
     "get_profile",
     "get_tweet_for_viewing",
+    "get_twits_and_reposts",
 ]
