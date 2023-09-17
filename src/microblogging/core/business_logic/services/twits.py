@@ -4,14 +4,14 @@ import logging
 from typing import TYPE_CHECKING
 
 from core.business_logic.exceptions import GetValueError, ProfileAccessError
-from core.models import Twits
+from core.models import Profiles, Twits
 from django.db.models import Count, Q
 
 from .tags import get_tags
 
 if TYPE_CHECKING:
     from core.business_logic.dto import TwitsDTO
-    from core.models import Profiles, Tags
+    from core.models import Tags
     from django.db.models.query import QuerySet
 
 logger = logging.getLogger(__name__)
@@ -29,9 +29,15 @@ def get_twit_by_id(twit_id: int) -> Twits:
 
 
 def get_repost_twit(profile: Profiles) -> QuerySet:
-    repost_twits = Twits.objects.prefetch_related("repost").filter(repost=profile)
+    repost_twits = Twits.objects.filter(repost=profile)
     logger.info(f"Get twits repost. profile: {profile.id}")
     return repost_twits
+
+
+def get_twits_and_reposts(profile: Profiles) -> list[Twits]:
+    repost_twits = get_repost_twit(profile=profile)
+    twits = get_twits(twits_list=repost_twits, profile=profile)
+    return list(twits)
 
 
 def get_twits(twits_list: QuerySet, profile: Profiles) -> QuerySet:
@@ -140,3 +146,32 @@ def edit_twit(twit_db: Twits, data: TwitsDTO) -> None:
     twit_db.tag.set(tags)
 
     return None
+
+
+def get_repost_from_followers(followers: list[Profiles]) -> QuerySet:
+    twits = Twits.objects.filter(repost__in=followers)
+    return twits
+
+
+def get_twits_to_index_page(profile: Profiles, sort_string: str) -> list[Twits]:
+    followers = profile.followers.all()
+    reposted_tweets_from_followers = get_repost_from_followers(followers=followers)
+
+    twits = (
+        Twits.objects.select_related("profile", "answer_to_twit")
+        .prefetch_related("like", "repost")
+        .annotate(
+            count_like=Count("like", distinct=True),
+            count_repost=Count("repost", distinct=True),
+            count_answer=Count("answer", distinct=True),
+        )
+        .filter(
+            Q(profile=profile)
+            | Q(repost=profile)
+            | Q(profile__in=followers)
+            | Q(id__in=reposted_tweets_from_followers)
+        )
+        .order_by(f"-{sort_string}")
+    )
+
+    return list(twits)
