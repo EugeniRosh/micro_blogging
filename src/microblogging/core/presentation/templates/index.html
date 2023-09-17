@@ -1,8 +1,45 @@
 {% extends "base.html"%}
 
 {% block content %}
-{% if request.user.is_authenticated %}
-    <h2>HELLO</h2>
-    <h3>{{ request.user.username }}</h3>
-{% endif %}
+<p>
+  <a href='{% url "index" %}?sort-string=count_like'>sort by likes</a>
+  &nbsp;
+  <a href='{% url "index" %}'>sort by created time</a>
+</p>
+    {% for t in twits.data %}
+    <p>
+        <a href='{% url "profile_users" t.profile.username %}'>{{ t.profile.username }}</a>
+        &nbsp;
+        {{ t.profile.first_name }}
+        {{ t.profile.last_name }}
+        &nbsp;
+        {{ t.created_at.day }}.{{ t.created_at.month }}.{{ t.created_at.year }}
+      </p>
+      <p>{{ t.text }}</p>
+      <p></p>
+      <p>
+        Likes: {{ t.count_like }}
+        &nbsp;
+        Reposts: {{ t.count_repost }}
+        &nbsp;
+        Answer: {{ t.count_answer }}
+      </p>
+    {% endfor %}
+    <p>
+      {% if twits.prev_page %}
+        <a href='{% url "index" %}?page={{ twits.prev_page }}&sort-string={{ sort_string }} '>Prev</a>
+      {% endif %}
+      &nbsp;
+      {% for i in twits.navigation_num %}
+        {% if i == '…' %}
+          {{ i }}
+        {% else %}
+          <a href='{% url "index" %}?page={{ i }}&sort-string={{ sort_string }}'>{{ i }}</a>
+        {% endif %}
+      {% endfor %}
+      &nbsp;
+      {% if twits.next_page %}
+          <a href='{% url "index" %}?page={{ twits.next_page }}&sort-string={{ sort_string }}'>Next</a>
+      {% endif %}
+    </p>
 {% endblock content %}
