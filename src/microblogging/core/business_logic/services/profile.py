@@ -10,10 +10,10 @@ from django.db.utils import IntegrityError
 
 from .common import change_photo
 from .send_an_mail import send_confirmation_code
-from .twits import get_repost_twit, get_twits
+from .twits import get_twits_and_reposts
 
 if TYPE_CHECKING:
-    from django.db.models.query import QuerySet
+    from core.models import Twits
     from django.http.request import QueryDict
     from django.utils.datastructures import MultiValueDict
 
@@ -29,17 +29,17 @@ def get_profile_by_username(username: str) -> Profiles:
     return profile
 
 
-def get_profile(username: str) -> tuple[Profiles, QuerySet, bool]:
+def get_profile(username: str) -> tuple[Profiles, list[Twits], bool]:
     profile = get_user_profile(username=username)
     twits = get_twits_and_reposts(profile=profile)
     follow = get_profile_in_follow(profile=profile, profile_follow=profile)
     return profile, twits, follow
 
 
-def get_twits_and_reposts(profile: Profiles) -> QueryDict:
-    repost_twits = get_repost_twit(profile=profile)
-    twits = get_twits(twits_list=repost_twits, profile=profile)
-    return twits
+def get_my_profile(profile: Profiles) -> tuple[Profiles, list[Twits]]:
+    user_profile = get_user_profile(username=profile.username)
+    twits = get_twits_and_reposts(profile=profile)
+    return user_profile, twits
 
 
 def get_user_profile(username: str) -> Profiles:

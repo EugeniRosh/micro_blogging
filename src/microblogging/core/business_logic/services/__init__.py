@@ -7,9 +7,9 @@ from .followers import get_all_followers, get_all_following
 from .profile import (
     add_follow,
     edit_profile,
+    get_my_profile,
     get_profile,
     get_profile_in_follow,
-    get_twits_and_reposts,
     get_user_profile,
     remove_follow,
 )
@@ -26,6 +26,8 @@ from .twits import (
     get_tweet_for_viewing,
     get_twit_by_id,
     get_twits,
+    get_twits_and_reposts,
+    get_twits_to_index_page,
     view_twits,
 )
 from .twits_likes import deleting_a_twit_likes, like_a_twit
@@ -63,4 +65,6 @@ __all__ = [
     "get_profile",
     "get_tweet_for_viewing",
     "get_twits_and_reposts",
+    "get_my_profile",
+    "get_twits_to_index_page",
 ]
