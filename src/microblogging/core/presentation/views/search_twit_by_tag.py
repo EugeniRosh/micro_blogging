@@ -23,6 +23,8 @@ if TYPE_CHECKING:
 @require_http_methods(["GET"])
 def get_twits_by_tag_controller(request: HttpRequest) -> HttpResponse:
     twits_paginator = None
+    form = TagsSearchForm()
+    tag = ""
 
     form_search = TagsSearchForm(data=request.GET)
     if form_search.is_valid():
@@ -30,6 +32,8 @@ def get_twits_by_tag_controller(request: HttpRequest) -> HttpResponse:
             dto=TagsSearchDTO, data=form_search.cleaned_data
         )
         twits = get_twits_by_tag(data=data)
+        tag = data.tag
+
 
         try:
             page_num = request.GET["page"]
@@ -47,9 +51,10 @@ def get_twits_by_tag_controller(request: HttpRequest) -> HttpResponse:
 
     context = {
         "title": "Tags",
-        "form": form_search,
+        "form": form,
         "twits": twits_paginator,
-        "tag": data.tag,
+        "tag": tag,
+
     }
     return render(
         request=request, template_name="search_twit_by_tag.html", context=context
