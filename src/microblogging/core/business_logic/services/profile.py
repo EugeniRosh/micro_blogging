@@ -33,12 +33,16 @@ def get_profile(username: str) -> tuple[Profiles, list[Twits], bool]:
     profile = get_user_profile(username=username)
     twits = get_twits_and_reposts(profile=profile)
     follow = get_profile_in_follow(profile=profile, profile_follow=profile)
+
+    logger.info(f"Get info user. username: {username}")
     return profile, twits, follow
 
 
 def get_my_profile(profile: Profiles) -> tuple[Profiles, list[Twits]]:
     user_profile = get_user_profile(username=profile.username)
     twits = get_twits_and_reposts(profile=profile)
+
+    logger.info(f"Get info user. profile: {profile.id}")
     return user_profile, twits
 
 
@@ -89,4 +93,6 @@ def remove_follow(user: Profiles, user_following: str) -> None:
 
 def get_profile_in_follow(profile: Profiles, profile_follow: Profiles) -> bool:
     follow: bool = profile.followers.filter(pk=profile_follow.pk).exists()
+
+    logger.info(f"Got a follow. profile: {profile.id}")
     return follow
