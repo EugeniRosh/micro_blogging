@@ -34,6 +34,7 @@ def get_twits_by_tag_controller(request: HttpRequest) -> HttpResponse:
         twits = get_twits_by_tag(data=data)
         tag = data.tag
 
+
         try:
             page_num = request.GET["page"]
         except KeyError:
@@ -53,6 +54,7 @@ def get_twits_by_tag_controller(request: HttpRequest) -> HttpResponse:
         "form": form,
         "twits": twits_paginator,
         "tag": tag,
+
     }
     return render(
         request=request, template_name="search_twit_by_tag.html", context=context
