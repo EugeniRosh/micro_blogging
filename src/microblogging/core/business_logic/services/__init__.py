@@ -27,6 +27,7 @@ from .twits import (
     get_twit_by_id,
     get_twits,
     get_twits_and_reposts,
+    get_twits_by_tag,
     get_twits_to_index_page,
     view_twits,
 )
@@ -67,4 +68,5 @@ __all__ = [
     "get_twits_and_reposts",
     "get_my_profile",
     "get_twits_to_index_page",
+    "get_twits_by_tag",
 ]
