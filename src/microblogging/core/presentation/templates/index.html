@@ -24,6 +24,8 @@
         &nbsp;
         Answer: {{ t.count_answer }}
       </p>
+      &nbsp;
+      <a href='{% url "view_twit" t.id %}'>View twits</a>
     {% endfor %}
     <p>
       {% if twits.prev_page %}
