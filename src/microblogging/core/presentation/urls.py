@@ -10,6 +10,7 @@ from core.presentation.views import (
     edit_twit_controller,
     follower_profile_removal_controller,
     get_followers_profile_controller,
+    get_twits_by_tag_controller,
     index_controller,
     logout_controller,
     my_profile_controller,
@@ -85,6 +86,7 @@ urlpatterns = [
     ),
     path("authentication/", authentication_controller, name="authentication"),
     path("logout/", logout_controller, name="logout"),
+    path("tags/", get_twits_by_tag_controller, name="get_twits_by_tag"),
     path("profile/", include(profile_patterns)),
     path("twit/", include(twit_patterns)),
 ]

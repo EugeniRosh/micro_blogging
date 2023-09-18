@@ -27,6 +27,7 @@ def index_controller(request: HttpRequest) -> HttpResponse:
         page_num = request.GET["page"]
     except KeyError:
         page_num = 1
+
     paginator = CustomPaginator(max_value=20)
     try:
         twits_paginator = paginator.paginate(data=twits, page_num=page_num)
@@ -34,6 +35,7 @@ def index_controller(request: HttpRequest) -> HttpResponse:
         return HttpResponseBadRequest(
             content="Page with provided number doesn't exist."
         )
+
     context = {
         "title": "MICROBLOG",
         "twits": twits_paginator,

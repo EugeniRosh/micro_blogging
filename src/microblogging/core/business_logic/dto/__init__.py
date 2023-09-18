@@ -2,6 +2,7 @@ from .authentication import AuthenticationDTO
 from .pagination import PaginationPageDTO
 from .profile import ProfileDTO
 from .registration import RegistrationDTO
+from .tags import TagsSearchDTO
 from .twits import TwitsDTO
 
 __all__ = [
@@ -10,4 +11,5 @@ __all__ = [
     "ProfileDTO",
     "PaginationPageDTO",
     "TwitsDTO",
+    "TagsSearchDTO",
 ]
