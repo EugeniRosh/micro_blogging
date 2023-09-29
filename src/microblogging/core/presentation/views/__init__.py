@@ -15,6 +15,7 @@ from .registration import (
     registrations_controller,
 )
 from .search_twit_by_tag import get_twits_by_tag_controller
+from .trending_in_your_country import trending_in_your_country_controller
 from .twits import (
     add_a_twits_controller,
     create_answer_to_twit_controller,
@@ -53,4 +54,5 @@ __all__ = [
     "follower_profile_removal_controller",
     "my_profile_controller",
     "get_twits_by_tag_controller",
+    "trending_in_your_country_controller",
 ]
