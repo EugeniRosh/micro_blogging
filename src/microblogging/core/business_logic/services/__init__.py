@@ -14,6 +14,7 @@ from .profile import (
     remove_follow,
 )
 from .registration import regisration_user, registration_confirmations
+from .tags import trending_in_your_country
 from .twits import (
     add_a_twits,
     creat_answer_to_twit,
@@ -69,4 +70,5 @@ __all__ = [
     "get_my_profile",
     "get_twits_to_index_page",
     "get_twits_by_tag",
+    "trending_in_your_country",
 ]

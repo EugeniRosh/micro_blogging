@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for t in tags %}
+        #<a href='{% url "get_twits_by_tag" %}?tag={{ t.tag }}'>{{ t.tag }}</a>: {{ t.count_tag }}
+    {% endfor %}
+{% endblock content %}
