@@ -19,6 +19,7 @@ from core.presentation.views import (
     receiving_profile_followings_controller,
     registration_confirmations_controller,
     registrations_controller,
+    trending_in_your_country_controller,
     twit_deletion_controller,
     twit_repost_deletion_controller,
     view_twits_controller,
@@ -89,4 +90,9 @@ urlpatterns = [
     path("tags/", get_twits_by_tag_controller, name="get_twits_by_tag"),
     path("profile/", include(profile_patterns)),
     path("twit/", include(twit_patterns)),
+    path(
+        "trending_in_country/",
+        trending_in_your_country_controller,
+        name="trending_in_country",
+    ),
 ]
