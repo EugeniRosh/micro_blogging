@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .twits import get_twit_by_id
+from .twits_notifications import adding_a_notification
 
 if TYPE_CHECKING:
     from core.models import Profiles, Twits
@@ -15,6 +16,7 @@ def like_a_twit(twit_id: int, profile: Profiles) -> None:
         return None
 
     twit.like.add(profile)
+    adding_a_notification(profile=profile, twit=twit)
     return None
 
 
