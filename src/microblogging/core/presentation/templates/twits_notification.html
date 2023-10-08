@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+
+{% block content %}
+    {% for n in notifications %}
+        {% if n.twit.profile.is_staff %}
+            <p>Administration</p>
+            <p>{{ n.twit.text }}</p>
+        {% else %}
+            <p>
+                <a href='{% url "profile_users" n.profile.username %}'>{{ n.profile.username }}</a>
+                liked your twit
+                <a href='{% url "view_twit" n.twit.id %}'>View twits</a>
+                , {{ n.created_at }}</p>
+        {% endif %}
+        &nbsp;
+    {% endfor %}
+{% endblock %}
