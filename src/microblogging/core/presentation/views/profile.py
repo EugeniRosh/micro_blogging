@@ -147,7 +147,7 @@ def edit_field_profile_controller(request: HttpRequest, field: str) -> HttpRespo
                     field = parsing_the_unique_creation_error_in_postgres(err=err)
                     form.add_error(field=field, error=f"{field} already exists")
         else:
-            redirect(to="edit_profile")
+            return redirect(to="edit_profile")
 
     context.update({"form": form})
     return render(

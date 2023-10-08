@@ -1,5 +1,6 @@
 from .authentication import authentication_controller, logout_controller
 from .index import index_controller
+from .notification import get_user_notifications_controller
 from .profile import (
     adding_a_follower_profile_controller,
     edit_field_profile_controller,
@@ -55,4 +56,5 @@ __all__ = [
     "my_profile_controller",
     "get_twits_by_tag_controller",
     "trending_in_your_country_controller",
+    "get_user_notifications_controller",
 ]

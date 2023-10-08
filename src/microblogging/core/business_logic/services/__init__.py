@@ -33,6 +33,7 @@ from .twits import (
     view_twits,
 )
 from .twits_likes import deleting_a_twit_likes, like_a_twit
+from .twits_notifications import get_user_notifications
 from .twits_repost import delete_repost_twits, repost_the_twit
 
 __all__ = [
@@ -71,4 +72,5 @@ __all__ = [
     "get_twits_to_index_page",
     "get_twits_by_tag",
     "trending_in_your_country",
+    "get_user_notifications",
 ]
