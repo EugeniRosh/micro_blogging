@@ -10,6 +10,7 @@ from .edit_profile import (
     EditProfilePhotoForm,
     EditProfileUsernameForm,
 )
+from .notification import NotificationForm
 from .registration import RegistrationsForm
 from .tags import TagsSearchForm
 from .twits import TwitsForm
@@ -28,4 +29,5 @@ __all__ = [
     "EditProfileDateOfBirthForm",
     "TwitsForm",
     "TagsSearchForm",
+    "NotificationForm",
 ]
