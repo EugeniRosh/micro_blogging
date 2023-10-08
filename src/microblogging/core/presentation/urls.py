@@ -11,6 +11,7 @@ from core.presentation.views import (
     follower_profile_removal_controller,
     get_followers_profile_controller,
     get_twits_by_tag_controller,
+    get_user_notifications_controller,
     index_controller,
     logout_controller,
     my_profile_controller,
@@ -95,4 +96,5 @@ urlpatterns = [
         trending_in_your_country_controller,
         name="trending_in_country",
     ),
+    path("notifications/", get_user_notifications_controller, name="notifications"),
 ]
