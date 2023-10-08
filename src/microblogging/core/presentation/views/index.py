@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from django.http import HttpRequest, HttpResponse
 
 
-@login_required
+@login_required()
 @require_http_methods(["GET"])
 def index_controller(request: HttpRequest) -> HttpResponse:
     try:

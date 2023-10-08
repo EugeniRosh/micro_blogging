@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from django.http import HttpRequest, HttpResponse
 
 
-@login_required
+@login_required()
 @require_http_methods(["GET"])
 def get_user_notifications_controller(request: HttpRequest) -> HttpResponse:
     notifications = get_user_notifications(profile=request.user)
