@@ -2,7 +2,7 @@
 from datetime import datetime
 
 import pytest
-from core.presentation.validators import ValidationAge
+from core.presentation.validators import ValdateMaxValue, ValidationAge
 from django.core.exceptions import ValidationError
 
 
@@ -34,3 +34,24 @@ class TestValidationAge:
         )
         with pytest.raises(ValidationError):
             self.validation(value=age_for_validation)
+
+
+class TestValdateMaxValue:
+    validation = ValdateMaxValue(max_count=5)
+
+    def test_validation_max_value_successfully(self) -> None:
+        value = ["test" for _ in range(self.validation._max_count)]
+        value_str = "\r\n".join(value)
+        result = self.validation(value=value_str)
+        assert result is None
+
+        value_is_less = ["test" for _ in range(self.validation._max_count - 1)]
+        value_is_less_str = "\r\n".join(value_is_less)
+        result_less = self.validation(value=value_is_less_str)
+        assert result_less is None
+
+    def test_counter_overrun_validation(self) -> None:
+        value = ["test" for _ in range(self.validation._max_count + 1)]
+        value_str = "\r\n".join(value)
+        with pytest.raises(ValidationError):
+            self.validation(value=value_str)
