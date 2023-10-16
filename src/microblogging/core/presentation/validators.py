@@ -26,7 +26,6 @@ class ValidationAge:
                 raise ValidationError(
                     message=f"Registration only for users over {self._min_age} years of age"
                 )
-        return None
 
 
 class ValidateFileExtension:
