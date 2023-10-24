@@ -12,6 +12,7 @@ from core.tests.mocks import FileMock
 from django.core.exceptions import ValidationError
 
 
+@pytest.mark.django_db
 class TestValidationAge:
     validation = ValidationAge(min_age=18)
 
@@ -42,6 +43,7 @@ class TestValidationAge:
             self.validation(value=age_for_validation)
 
 
+@pytest.mark.django_db
 class TestValdateMaxValue:
     validation = ValdateMaxValue(max_count=5)
 
@@ -63,6 +65,7 @@ class TestValdateMaxValue:
             self.validation(value=value_str)
 
 
+@pytest.mark.django_db
 class TestValidateFileExtension:
     validation = ValidateFileExtension(available_extensions=["pdf"])
 
@@ -82,6 +85,7 @@ class TestValidateFileExtension:
             self.validation(value=file_mock)
 
 
+@pytest.mark.django_db
 class TestValidateFileSize:
     validation = ValidateFileSize(max_size=5_000_000)
 
