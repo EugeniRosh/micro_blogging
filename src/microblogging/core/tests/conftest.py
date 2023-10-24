@@ -35,6 +35,7 @@ def populate_db() -> None:
         country="Belarus",
         description="test text user3",
         date_of_birth=datetime(2002, 7, 3),
+        is_active=False,
     )
     profile_1.followers.set([profile_2, profile_3])
     profile_2.followers.set([profile_1])
