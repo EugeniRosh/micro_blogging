@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-def get_twits_and_counts_of_likes_of_reposts_of_answer() -> QuerySet:
+def get_twits_and_counts_of_likes_of_reposts_of_answer() -> QuerySet[Twits]:
     twits = (
         Twits.objects.select_related("profile", "answer_to_twit")
         .prefetch_related("like", "repost")
