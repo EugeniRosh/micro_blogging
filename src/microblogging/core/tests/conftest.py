@@ -91,5 +91,5 @@ def populate_db() -> None:
     twit_6.repost.set([profile_1])
 
     profile_1.notification.set([twit_6, twit_5])
-    profile_2.notification.set([twit_6])
+    profile_2.notification.set([twit_1])
     profile_3.notification.set([twit_6, twit_1])
