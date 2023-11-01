@@ -7,6 +7,7 @@ from core.models import Profiles, Twits
 def test_like_a_twit_successfully() -> None:
     twit = Twits.objects.get(text="test text twit_2")
     profile = Profiles.objects.get(username="testuser3")
+    assert profile not in twit.like.all()
     result = like_a_twit(twit_id=twit.pk, profile=profile)
     assert result == "Like added"
     likes = twit.like.all()
@@ -27,6 +28,7 @@ def test_like_a_twit_like_my_twit() -> None:
 def test_deleting_a_twit_likes_successfully() -> None:
     twit = Twits.objects.get(text="test text twit_1")
     profile = Profiles.objects.get(username="testuser2")
+    assert profile in twit.like.all()
     result = deleting_a_twit_likes(twit_id=twit.pk, profile=profile)
     assert result == "Like removed"
     likes = twit.like.all()
