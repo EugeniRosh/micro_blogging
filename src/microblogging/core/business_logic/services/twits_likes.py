@@ -13,11 +13,11 @@ def like_a_twit(twit_id: int, profile: Profiles) -> str:
     twit: Twits = get_twit_by_id(twit_id=twit_id)
 
     if twit.profile == profile:
-        return "you can't like your twit"
+        return "You can't like your twit"
 
     twit.like.add(profile)
     adding_a_notification(profile=profile, twit=twit)
-    return "like added"
+    return "Like added"
 
 
 def deleting_a_twit_likes(twit_id: int, profile: Profiles) -> str:
@@ -27,4 +27,4 @@ def deleting_a_twit_likes(twit_id: int, profile: Profiles) -> str:
         return "You can't delete likes on my twit"
 
     twit.like.remove(profile)
-    return "like removed"
+    return "Like removed"
