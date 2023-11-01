@@ -20,11 +20,11 @@ def like_a_twit(twit_id: int, profile: Profiles) -> str:
     return "like added"
 
 
-def deleting_a_twit_likes(twit_id: int, profile: Profiles) -> None:
+def deleting_a_twit_likes(twit_id: int, profile: Profiles) -> str:
     twit: Twits = get_twit_by_id(twit_id=twit_id)
 
     if twit.profile == profile:
-        return None
+        return "You can't delete likes on my tweet"
 
     twit.like.remove(profile)
-    return None
+    return "like removed"
