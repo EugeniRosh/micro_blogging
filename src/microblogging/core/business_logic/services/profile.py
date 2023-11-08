@@ -62,17 +62,18 @@ def get_user_profile(username: str) -> Profiles:
 def edit_profile(username: str, data: QueryDict, files: MultiValueDict) -> None:
     if "photo" in files:
         data = change_photo(field="photo", data=files)
-    elif "email" in data:
-        profile, profile_bool = Profiles.objects.update_or_create(
-            username=username, defaults={"is_active": False}
-        )
-        send_confirmation_code(user=profile, email=data["email"])
 
     try:
         Profiles.objects.update_or_create(username=username, defaults=data)
         logger.info(f"Profile edit. username: {username}. {data}")
     except IntegrityError as err:
         raise CreateUniqueError(err)
+
+    if "email" in data:
+        profile, profile_bool = Profiles.objects.update_or_create(
+            username=username, defaults={"is_active": False}
+        )
+        send_confirmation_code(user=profile, email=data["email"])
 
     return None
 
