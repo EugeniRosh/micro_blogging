@@ -2,6 +2,13 @@ from datetime import datetime
 
 import pytest
 from core.models import Profiles, Tags, Twits
+from core.tests.utils import get_test_file
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+
+@pytest.fixture
+def png_for_test() -> InMemoryUploadedFile:
+    return get_test_file()
 
 
 @pytest.fixture(autouse=True)
