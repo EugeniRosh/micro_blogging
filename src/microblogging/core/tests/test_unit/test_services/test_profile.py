@@ -4,6 +4,7 @@ from core.business_logic.services.profile import (
     get_my_profile,
     get_profile,
     get_profile_by_username,
+    get_user_profile,
 )
 from core.models import Profiles, Twits
 
@@ -60,3 +61,19 @@ def test_get_my_profile_getvalueerror() -> None:
     profile = Profiles(username="does_not_exist")
     with pytest.raises(GetValueError):
         get_my_profile(profile=profile)
+
+
+@pytest.mark.django_db
+def test_get_user_profile_succssefully() -> None:
+    profile = Profiles.objects.get(username="testuser1")
+    test_profile = get_user_profile(username=profile.username)
+
+    assert test_profile == profile
+    assert test_profile.count_followers == 1
+    assert test_profile.count_following == 2
+
+
+@pytest.mark.django_db
+def test_get_user_profile_getvalueerror() -> None:
+    with pytest.raises(GetValueError):
+        get_profile(username="does_not_exist")
