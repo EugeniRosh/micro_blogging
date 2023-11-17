@@ -30,7 +30,11 @@ def get_profile_by_username(username: str) -> Profiles:
 
 
 def get_profile(username: str) -> tuple[Profiles, list[Twits], bool]:
-    profile = get_user_profile(username=username)
+    try:
+        profile = get_user_profile(username=username)
+    except GetValueError:
+        raise GetValueError
+
     twits = get_twits_and_reposts(profile=profile)
     follow = get_profile_in_follow(profile=profile, profile_follow=profile)
 
@@ -39,7 +43,11 @@ def get_profile(username: str) -> tuple[Profiles, list[Twits], bool]:
 
 
 def get_my_profile(profile: Profiles) -> tuple[Profiles, list[Twits]]:
-    user_profile = get_user_profile(username=profile.username)
+    try:
+        user_profile = get_user_profile(username=profile.username)
+    except GetValueError:
+        raise GetValueError
+
     twits = get_twits_and_reposts(profile=profile)
 
     logger.info(f"Get info user. profile: {profile.id}")
@@ -79,14 +87,20 @@ def edit_profile(username: str, data: QueryDict, files: MultiValueDict) -> None:
 
 
 def add_follow(user: Profiles, user_following: str) -> None:
-    user_following_db = get_profile_by_username(username=user_following)
+    try:
+        user_following_db = get_profile_by_username(username=user_following)
+    except GetValueError:
+        raise GetValueError
 
     user.followers.add(user_following_db)
     return None
 
 
 def remove_follow(user: Profiles, user_following: str) -> None:
-    user_following_db = get_profile_by_username(username=user_following)
+    try:
+        user_following_db = get_profile_by_username(username=user_following)
+    except GetValueError:
+        raise GetValueError
 
     user.followers.remove(user_following_db)
     return None
