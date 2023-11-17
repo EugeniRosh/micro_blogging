@@ -7,6 +7,7 @@ from core.business_logic.services.profile import (
     get_profile,
     get_profile_by_username,
     get_user_profile,
+    remove_follow,
 )
 from core.models import Profiles, Twits
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -157,3 +158,22 @@ def test_add_follow_createuniqueerror() -> None:
     user_following = "testuser999"
     with pytest.raises(GetValueError):
         add_follow(user=profile, user_following=user_following)
+
+
+@pytest.mark.django_db
+def test_remove_follow_succssefully() -> None:
+    profile = Profiles.objects.get(username="testuser1")
+    user_following = Profiles.objects.get(username="testuser2")
+    remove_follow(user=profile, user_following=user_following.username)
+    profile.refresh_from_db()
+    following = profile.followers.all()
+    assert len(following) == 1
+    assert user_following not in following
+
+
+@pytest.mark.django_db
+def test_remove_follow_createuniqueerror() -> None:
+    profile = Profiles.objects.get(username="testuser3")
+    user_following = "testuser999"
+    with pytest.raises(GetValueError):
+        remove_follow(user=profile, user_following=user_following)
