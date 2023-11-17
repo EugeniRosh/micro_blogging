@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-def get_all_followers(username: str) -> QuerySet[Followers]:
+def get_all_followers(username: str) -> QuerySet[dict]:
     followers = (
         Followers.objects.prefetch_related("profiles")
         .values("follower__username")
@@ -22,7 +22,7 @@ def get_all_followers(username: str) -> QuerySet[Followers]:
     return followers
 
 
-def get_all_following(username: str) -> QuerySet[Followers]:
+def get_all_following(username: str) -> QuerySet[dict]:
     following = (
         Followers.objects.prefetch_related("profiles")
         .values("following__username")
