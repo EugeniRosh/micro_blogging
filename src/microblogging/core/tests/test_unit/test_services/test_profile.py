@@ -6,6 +6,7 @@ from core.business_logic.services.profile import (
     get_my_profile,
     get_profile,
     get_profile_by_username,
+    get_profile_in_follow,
     get_user_profile,
     remove_follow,
 )
@@ -177,3 +178,16 @@ def test_remove_follow_createuniqueerror() -> None:
     user_following = "testuser999"
     with pytest.raises(GetValueError):
         remove_follow(user=profile, user_following=user_following)
+
+
+@pytest.mark.django_db
+def test_get_profile_in_follow_succssefully() -> None:
+    profile_1 = Profiles.objects.get(username="testuser2")
+    profile_2 = Profiles.objects.get(username="testuser1")
+    follow_true = get_profile_in_follow(profile=profile_1, profile_follow=profile_2)
+    assert type(follow_true) == bool
+    assert follow_true is True
+    profile_3 = Profiles.objects.get(username="testuser3")
+    follow_false = get_profile_in_follow(profile=profile_1, profile_follow=profile_3)
+    assert type(follow_true) == bool
+    assert follow_false is False
