@@ -1,6 +1,7 @@
 import pytest
 from core.business_logic.exceptions import CreateUniqueError, GetValueError
 from core.business_logic.services.profile import (
+    add_follow,
     edit_profile,
     get_my_profile,
     get_profile,
@@ -137,3 +138,22 @@ def test_edit_profile_raise_createuniqueerror() -> None:
         edit_profile(
             username="testuser1", data=test_querydict, files=test_multivaluedict
         )
+
+
+@pytest.mark.django_db
+def test_add_follow_succssefully() -> None:
+    profile = Profiles.objects.get(username="testuser3")
+    user_following = Profiles.objects.get(username="testuser2")
+    add_follow(user=profile, user_following=user_following.username)
+    profile.refresh_from_db()
+    following = profile.followers.all()
+    assert len(following) == 1
+    assert user_following in following
+
+
+@pytest.mark.django_db
+def test_add_follow_createuniqueerror() -> None:
+    profile = Profiles.objects.get(username="testuser3")
+    user_following = "testuser999"
+    with pytest.raises(GetValueError):
+        add_follow(user=profile, user_following=user_following)
