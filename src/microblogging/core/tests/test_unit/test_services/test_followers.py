@@ -8,6 +8,7 @@ def test_get_all_followers_successfully() -> None:
     followers = get_all_followers(username="testuser1")
     assert type(followers) == QuerySet
     assert len(followers) == 1
+    assert type(followers[0]) == dict
     assert followers[0]["follower__username"] == "testuser2"
 
 
@@ -23,6 +24,7 @@ def test_get_all_following_successfully() -> None:
     followers = get_all_following(username="testuser1")
     assert type(followers) == QuerySet
     assert len(followers) == 2
+    assert type(followers[0]) == dict
     assert followers[0]["following__username"] == "testuser2"
 
 
