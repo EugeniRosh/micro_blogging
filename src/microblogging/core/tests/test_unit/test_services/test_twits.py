@@ -4,6 +4,7 @@ from core.business_logic.services.twits import (
     get_repost_twit,
     get_twit_by_id,
     get_twits_and_counts_of_likes_of_reposts_of_answer,
+    get_twits_and_reposts,
 )
 from core.models import Profiles, Twits
 from django.db.models.query import QuerySet
@@ -44,3 +45,13 @@ def test_get_repost_twit_succssefully() -> None:
     assert type(twits) == QuerySet
     assert type(twits[0]) == Twits
     assert len(twits) == 3
+
+
+@pytest.mark.django_db
+def test_get_twits_and_reposts_succssefully() -> None:
+    profile = Profiles.objects.get(username="testuser1")
+    twits = get_twits_and_reposts(profile=profile)
+    assert type(twits) == list
+    assert type(twits[0]) == Twits
+    assert len(twits) == 6
+    assert twits[0].created_at > twits[1].created_at
