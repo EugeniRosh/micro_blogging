@@ -4,6 +4,7 @@ from core.business_logic.exceptions import GetValueError
 from core.business_logic.services.twits import (
     add_a_twits,
     get_repost_twit,
+    get_tweet_for_viewing,
     get_twit_by_id,
     get_twits,
     get_twits_and_counts_of_likes_of_reposts_of_answer,
@@ -85,3 +86,48 @@ def test_add_a_twits_succssefully() -> None:
     assert len(tags) == 3
     for tag in tags:
         assert tag.tag in ["pyton", "test", "twits"]
+
+
+@pytest.mark.django_db
+def test_get_tweet_for_viewing_my_twit_succssefully() -> None:
+    twit_from_db = Twits.objects.get(text="test text twit_2")
+    tags_db = twit_from_db.tag.all()
+    profile = twit_from_db.profile
+    twit, tags, twits_ansver, like_twit, repost_twit = get_tweet_for_viewing(
+        twit_id=twit_from_db.pk, profile=profile
+    )
+    assert twit == twit_from_db
+    assert list(tags_db) == tags
+    assert type(twits_ansver) == list
+    assert len(twits_ansver) == 1
+    assert type(twits_ansver[0]) == Twits
+    assert twits_ansver[0].text == "test text twit_5"
+    assert like_twit is None
+    assert repost_twit is None
+
+
+@pytest.mark.django_db
+def test_get_tweet_for_viewing_someone_else_twit_succssefully() -> None:
+    twit_from_db = Twits.objects.get(text="test text twit_2")
+    tags_db = twit_from_db.tag.all()
+    profile = Profiles.objects.get(username="testuser3")
+    twit, tags, twits_ansver, like_twit, repost_twit = get_tweet_for_viewing(
+        twit_id=twit_from_db.pk, profile=profile
+    )
+    assert twit == twit_from_db
+    assert list(tags_db) == tags
+    assert type(twits_ansver) == list
+    assert len(twits_ansver) == 1
+    assert type(twits_ansver[0]) == Twits
+    assert twits_ansver[0].text == "test text twit_5"
+    assert like_twit is False
+    assert repost_twit is True
+
+
+@pytest.mark.django_db
+def test_get_tweet_for_viewing_raise_getvalueerror() -> None:
+    twit = Twits.objects.all().order_by("-id")[0]
+    twit_id = twit.pk + 1
+    profile = Profiles.objects.get(username="testuser3")
+    with pytest.raises(GetValueError):
+        get_tweet_for_viewing(twit_id=twit_id, profile=profile)
