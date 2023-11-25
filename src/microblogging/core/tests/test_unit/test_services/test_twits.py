@@ -9,6 +9,7 @@ from core.business_logic.services.twits import (
     get_twits,
     get_twits_and_counts_of_likes_of_reposts_of_answer,
     get_twits_and_reposts,
+    view_twits,
 )
 from core.models import Profiles, Twits
 from django.db.models.query import QuerySet
@@ -131,3 +132,24 @@ def test_get_tweet_for_viewing_raise_getvalueerror() -> None:
     profile = Profiles.objects.get(username="testuser3")
     with pytest.raises(GetValueError):
         get_tweet_for_viewing(twit_id=twit_id, profile=profile)
+
+
+@pytest.mark.django_db
+def test_view_twits_succssefully() -> None:
+    twit_from_db = Twits.objects.get(text="test text twit_2")
+    tags_db = twit_from_db.tag.all()
+    twit, tag, twits_ansver = view_twits(twit_id=twit_from_db.pk)
+    assert twit == twit_from_db
+    assert list(tags_db) == tag
+    assert type(twits_ansver) == list
+    assert len(twits_ansver) == 1
+    assert type(twits_ansver[0]) == Twits
+    assert twits_ansver[0].text == "test text twit_5"
+
+
+@pytest.mark.django_db
+def test_view_twits_raise_getvalueerror() -> None:
+    twit = Twits.objects.all().order_by("-id")[0]
+    twit_id = twit.pk + 1
+    with pytest.raises(GetValueError):
+        view_twits(twit_id=twit_id)
