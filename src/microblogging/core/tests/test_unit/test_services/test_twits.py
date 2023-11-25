@@ -3,6 +3,7 @@ from core.business_logic.exceptions import GetValueError
 from core.business_logic.services.twits import (
     get_repost_twit,
     get_twit_by_id,
+    get_twits,
     get_twits_and_counts_of_likes_of_reposts_of_answer,
     get_twits_and_reposts,
 )
@@ -55,3 +56,14 @@ def test_get_twits_and_reposts_succssefully() -> None:
     assert type(twits[0]) == Twits
     assert len(twits) == 6
     assert twits[0].created_at > twits[1].created_at
+
+
+@pytest.mark.django_db
+def test_get_twits_succssefully() -> None:
+    profile = Profiles.objects.get(username="testuser1")
+    twits = Twits.objects.filter(profile=profile)
+    twits_for_test = get_twits(twits_list=twits, profile=profile)
+    assert type(twits_for_test) == QuerySet
+    assert type(twits_for_test[0]) == Twits
+    assert len(twits_for_test) == 3
+    assert twits_for_test[0].created_at > twits_for_test[1].created_at
