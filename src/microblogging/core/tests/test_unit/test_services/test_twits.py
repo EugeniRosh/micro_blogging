@@ -1,6 +1,8 @@
 import pytest
+from core.business_logic.dto import TwitsDTO
 from core.business_logic.exceptions import GetValueError
 from core.business_logic.services.twits import (
+    add_a_twits,
     get_repost_twit,
     get_twit_by_id,
     get_twits,
@@ -67,3 +69,19 @@ def test_get_twits_succssefully() -> None:
     assert type(twits_for_test[0]) == Twits
     assert len(twits_for_test) == 3
     assert twits_for_test[0].created_at > twits_for_test[1].created_at
+
+
+@pytest.mark.django_db
+def test_add_a_twits_succssefully() -> None:
+    profile = Profiles.objects.get(username="testuser1")
+    twit_dto = TwitsDTO(
+        text="test add a twits succssefully", tag="pyton\r\ntest\r\ntwits"
+    )
+    twit_db = add_a_twits(data=twit_dto, profile=profile)
+    assert type(twit_db) == Twits
+    assert twit_db.text == "test add a twits succssefully"
+    assert twit_db.profile == profile
+    tags = twit_db.tag.all()
+    assert len(tags) == 3
+    for tag in tags:
+        assert tag.tag in ["pyton", "test", "twits"]
