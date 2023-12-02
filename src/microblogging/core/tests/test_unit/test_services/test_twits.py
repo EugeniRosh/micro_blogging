@@ -5,6 +5,7 @@ from core.business_logic.services.twits import (
     add_a_twits,
     creat_answer_to_twit,
     delete_twits,
+    edit_twit,
     get_info_twit_for_edit,
     get_profile_like_on_twit,
     get_profile_repost_on_twit,
@@ -248,3 +249,15 @@ def test_get_info_twit_for_edit_raise_getvalueerror() -> None:
     twit_id = twit.pk + 1
     with pytest.raises(GetValueError):
         get_info_twit_for_edit(twit_id=twit_id)
+
+
+@pytest.mark.django_db
+def test_edit_twit_succssefully() -> None:
+    twit = Twits.objects.get(text="test text twit_1")
+    data = TwitsDTO(text="answer to twit", tag="test")
+    edit_twit(twit_db=twit, data=data)
+    twit.refresh_from_db()
+    assert twit.text == data.text
+    tags = twit.tag.all()
+    assert len(tags) == 1
+    assert tags[0].tag == data.tag
