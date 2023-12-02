@@ -5,6 +5,7 @@ from core.business_logic.services.twits import (
     add_a_twits,
     delete_twits,
     get_profile_like_on_twit,
+    get_profile_repost_on_twit,
     get_repost_twit,
     get_tweet_for_viewing,
     get_twit_by_id,
@@ -185,3 +186,14 @@ def test_get_profile_like_on_twit_succssefully() -> None:
     like_profile_2 = get_profile_like_on_twit(profile=profile_2, twit=twit)
     assert like_profile_3 is False
     assert like_profile_2 is True
+
+
+@pytest.mark.django_db
+def test_get_profile_repost_on_twit_succssefully() -> None:
+    profile_3 = Profiles.objects.get(username="testuser3")
+    profile_1 = Profiles.objects.get(username="testuser1")
+    twit = Twits.objects.get(text="test text twit_6")
+    like_profile_3 = get_profile_repost_on_twit(profile=profile_3, twit=twit)
+    like_profile_1 = get_profile_repost_on_twit(profile=profile_1, twit=twit)
+    assert like_profile_3 is False
+    assert like_profile_1 is True
