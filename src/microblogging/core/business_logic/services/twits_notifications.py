@@ -7,7 +7,6 @@ from django.db.models import Q
 
 if TYPE_CHECKING:
     from core.models import Profiles
-    from django.db.models.query import QuerySet
 
 
 def adding_a_notification(profile: Profiles, twit: Twits) -> None:
@@ -15,7 +14,7 @@ def adding_a_notification(profile: Profiles, twit: Twits) -> None:
     return None
 
 
-def get_user_notifications(profile: Profiles) -> QuerySet:
+def get_user_notifications(profile: Profiles) -> list[TwitsProfilesNotifications]:
     notifications = (
         TwitsProfilesNotifications.objects.filter(
             Q(twit__profile=profile) | Q(twit__profile__is_staff=True, profile=profile)

@@ -22,12 +22,12 @@ def get_tags(tags: str) -> list[Tags]:
     return tags_list
 
 
-def get_a_tag_to_search_for_tweets(tag: str) -> QuerySet:
+def get_a_tag_to_search_for_tweets(tag: str) -> QuerySet[Tags]:
     search_tag = Tags.objects.filter(tag=tag)
     return search_tag
 
 
-def trending_in_your_country(country: str) -> QuerySet:
+def trending_in_your_country(country: str) -> QuerySet[Tags]:
     date = datetime.today()
     date_to_search = date - timedelta(days=1)
 

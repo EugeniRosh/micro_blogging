@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-def regisration_user(data: RegistrationDTO) -> None:
+def regisration_user(data: RegistrationDTO) -> int:
     user_model = get_user_model()
     try:
         data.password = make_password(data.password)
@@ -43,9 +43,9 @@ def regisration_user(data: RegistrationDTO) -> None:
     create_user.groups.add(role)
 
     send_confirmation_code(user=create_user, email=data.email)
-
+    id_create_user: int = create_user.pk
     logger.info(f"Created user:{data.username}")
-    return None
+    return id_create_user
 
 
 def registration_confirmations(confirmation_code: str) -> None:
