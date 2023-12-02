@@ -3,6 +3,7 @@ from core.business_logic.dto import TwitsDTO
 from core.business_logic.exceptions import GetValueError, ProfileAccessError
 from core.business_logic.services.twits import (
     add_a_twits,
+    creat_answer_to_twit,
     delete_twits,
     get_profile_like_on_twit,
     get_profile_repost_on_twit,
@@ -197,3 +198,32 @@ def test_get_profile_repost_on_twit_succssefully() -> None:
     like_profile_1 = get_profile_repost_on_twit(profile=profile_1, twit=twit)
     assert like_profile_3 is False
     assert like_profile_1 is True
+
+
+@pytest.mark.django_db
+def test_creat_answer_to_twit_succssefully() -> None:
+    twit = Twits.objects.get(text="test text twit_3")
+    profile = Profiles.objects.get(username="testuser3")
+    data = TwitsDTO(text="answer to twit", tag="python\r\nanswer\r\ntest")
+    creat_answer_to_twit(twit_id=twit.pk, data=data, profile=profile)
+
+    twit_list_for_test = Twits.objects.filter(answer_to_twit=twit)
+    assert len(twit_list_for_test) == 1
+    twit_for_test = twit_list_for_test[0]
+    assert twit_for_test.text == "answer to twit"
+    assert twit_for_test.profile == profile
+    assert twit_for_test.answer_to_twit == twit
+    tags = twit_for_test.tag.all()
+    assert len(tags) == 3
+    for tag in tags:
+        assert tag.tag in ["python", "answer", "test"]
+
+
+@pytest.mark.django_db
+def test_creat_answer_to_twit_raise_getvalueerror() -> None:
+    twit = Twits.objects.all().order_by("-id")[0]
+    twit_id = twit.pk + 1
+    profile = Profiles.objects.get(username="testuser3")
+    data = TwitsDTO(text="answer to twit", tag="python\r\nanswer\r\ntest")
+    with pytest.raises(GetValueError):
+        creat_answer_to_twit(twit_id=twit_id, data=data, profile=profile)
