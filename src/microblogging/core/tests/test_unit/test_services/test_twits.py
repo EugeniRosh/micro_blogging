@@ -5,6 +5,7 @@ from core.business_logic.services.twits import (
     add_a_twits,
     creat_answer_to_twit,
     delete_twits,
+    get_info_twit_for_edit,
     get_profile_like_on_twit,
     get_profile_repost_on_twit,
     get_repost_twit,
@@ -15,7 +16,7 @@ from core.business_logic.services.twits import (
     get_twits_and_reposts,
     view_twits,
 )
-from core.models import Profiles, Twits
+from core.models import Profiles, Tags, Twits
 from django.db.models.query import QuerySet
 
 
@@ -227,3 +228,23 @@ def test_creat_answer_to_twit_raise_getvalueerror() -> None:
     data = TwitsDTO(text="answer to twit", tag="python\r\nanswer\r\ntest")
     with pytest.raises(GetValueError):
         creat_answer_to_twit(twit_id=twit_id, data=data, profile=profile)
+
+
+@pytest.mark.django_db
+def test_get_info_twit_for_edit_succssefully() -> None:
+    twit = Twits.objects.get(text="test text twit_1")
+    twit_for_test, tags_for_test = get_info_twit_for_edit(twit_id=twit.pk)
+    assert twit_for_test == twit
+    assert type(tags_for_test) == list
+    assert len(tags_for_test) == 3
+    assert type(tags_for_test[0]) == Tags
+    for tag in tags_for_test:
+        assert tag.tag in ["python", "sql", "postresql"]
+
+
+@pytest.mark.django_db
+def test_get_info_twit_for_edit_raise_getvalueerror() -> None:
+    twit = Twits.objects.all().order_by("-id")[0]
+    twit_id = twit.pk + 1
+    with pytest.raises(GetValueError):
+        get_info_twit_for_edit(twit_id=twit_id)
