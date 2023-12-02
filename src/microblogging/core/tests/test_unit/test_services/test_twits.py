@@ -15,6 +15,7 @@ from core.business_logic.services.twits import (
     get_twits,
     get_twits_and_counts_of_likes_of_reposts_of_answer,
     get_twits_and_reposts,
+    get_twits_to_index_page,
     view_twits,
 )
 from core.models import Profiles, Tags, Twits
@@ -261,3 +262,14 @@ def test_edit_twit_succssefully() -> None:
     tags = twit.tag.all()
     assert len(tags) == 1
     assert tags[0].tag == data.tag
+
+
+@pytest.mark.django_db
+def test_get_twits_to_index_page_succssefully() -> None:
+    profile = Profiles.objects.get(username="testuser1")
+    sort_string = "created_at"
+    twits = get_twits_to_index_page(profile=profile, sort_string=sort_string)
+    assert type(twits) == list
+    assert len(twits) == 6
+    assert type(twits[0]) == Twits
+    assert twits[0].created_at > twits[1].created_at
