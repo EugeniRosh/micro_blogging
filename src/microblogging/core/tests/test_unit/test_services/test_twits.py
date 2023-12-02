@@ -4,6 +4,7 @@ from core.business_logic.exceptions import GetValueError, ProfileAccessError
 from core.business_logic.services.twits import (
     add_a_twits,
     delete_twits,
+    get_profile_like_on_twit,
     get_repost_twit,
     get_tweet_for_viewing,
     get_twit_by_id,
@@ -173,3 +174,14 @@ def test_delete_twits_raise_profileaccesserror() -> None:
     twit = Twits.objects.get(text="test text twit_1")
     with pytest.raises(ProfileAccessError):
         delete_twits(twit_id=twit.pk, profile=profile)
+
+
+@pytest.mark.django_db
+def test_get_profile_like_on_twit_succssefully() -> None:
+    profile_3 = Profiles.objects.get(username="testuser3")
+    profile_2 = Profiles.objects.get(username="testuser2")
+    twit = Twits.objects.get(text="test text twit_2")
+    like_profile_3 = get_profile_like_on_twit(profile=profile_3, twit=twit)
+    like_profile_2 = get_profile_like_on_twit(profile=profile_2, twit=twit)
+    assert like_profile_3 is False
+    assert like_profile_2 is True
