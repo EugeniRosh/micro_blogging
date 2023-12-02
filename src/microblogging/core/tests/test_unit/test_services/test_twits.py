@@ -1,5 +1,5 @@
 import pytest
-from core.business_logic.dto import TwitsDTO
+from core.business_logic.dto import TagsSearchDTO, TwitsDTO
 from core.business_logic.exceptions import GetValueError, ProfileAccessError
 from core.business_logic.services.twits import (
     add_a_twits,
@@ -15,6 +15,7 @@ from core.business_logic.services.twits import (
     get_twits,
     get_twits_and_counts_of_likes_of_reposts_of_answer,
     get_twits_and_reposts,
+    get_twits_by_tag,
     get_twits_to_index_page,
     view_twits,
 )
@@ -271,5 +272,15 @@ def test_get_twits_to_index_page_succssefully() -> None:
     twits = get_twits_to_index_page(profile=profile, sort_string=sort_string)
     assert type(twits) == list
     assert len(twits) == 6
+    assert type(twits[0]) == Twits
+    assert twits[0].created_at > twits[1].created_at
+
+
+@pytest.mark.django_db
+def test_get_twits_by_tag_succssefully() -> None:
+    data = TagsSearchDTO(tag="python")
+    twits = get_twits_by_tag(data=data)
+    assert type(twits) == list
+    assert len(twits) == 3
     assert type(twits[0]) == Twits
     assert twits[0].created_at > twits[1].created_at
