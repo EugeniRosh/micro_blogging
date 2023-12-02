@@ -41,7 +41,7 @@ def get_twit_by_id(twit_id: int) -> Twits:
     return twit
 
 
-def get_repost_twit(profile: Profiles) -> QuerySet:
+def get_repost_twit(profile: Profiles) -> QuerySet[Twits]:
     repost_twits = Twits.objects.filter(repost=profile)
     logger.info(f"Get twits repost. profile: {profile.id}")
     return repost_twits
@@ -53,7 +53,7 @@ def get_twits_and_reposts(profile: Profiles) -> list[Twits]:
     return list(twits)
 
 
-def get_twits(twits_list: QuerySet, profile: Profiles) -> QuerySet:
+def get_twits(twits_list: QuerySet[Twits], profile: Profiles) -> QuerySet[Twits]:
     twits = get_twits_and_counts_of_likes_of_reposts_of_answer()
 
     twits = twits.filter(Q(profile=profile) | Q(id__in=twits_list)).order_by(
@@ -77,7 +77,10 @@ def add_a_twits(data: TwitsDTO, profile: Profiles) -> Twits:
 def get_tweet_for_viewing(
     twit_id: int, profile: Profiles
 ) -> tuple[Twits, list[Tags], list[Twits], bool | None, bool | None]:
-    twit, tags, twits_ansver = view_twits(twit_id=twit_id)
+    try:
+        twit, tags, twits_ansver = view_twits(twit_id=twit_id)
+    except GetValueError:
+        raise GetValueError
 
     if profile != twit.profile:
         like_twit = get_profile_like_on_twit(profile=profile, twit=twit)
@@ -160,14 +163,9 @@ def edit_twit(twit_db: Twits, data: TwitsDTO) -> None:
     return None
 
 
-def get_repost_from_followers(followers: list[Profiles]) -> QuerySet:
-    twits = Twits.objects.filter(repost__in=followers)
-    return twits
-
-
 def get_twits_to_index_page(profile: Profiles, sort_string: str) -> list[Twits]:
     followers = profile.followers.all()
-    reposted_tweets_from_followers = get_repost_from_followers(followers=followers)
+    reposted_tweets_from_followers = Twits.objects.filter(repost__in=followers)
 
     twits = get_twits_and_counts_of_likes_of_reposts_of_answer()
     twits = twits.filter(
