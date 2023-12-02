@@ -1,8 +1,9 @@
 import pytest
 from core.business_logic.dto import TwitsDTO
-from core.business_logic.exceptions import GetValueError
+from core.business_logic.exceptions import GetValueError, ProfileAccessError
 from core.business_logic.services.twits import (
     add_a_twits,
+    delete_twits,
     get_repost_twit,
     get_tweet_for_viewing,
     get_twit_by_id,
@@ -153,3 +154,22 @@ def test_view_twits_raise_getvalueerror() -> None:
     twit_id = twit.pk + 1
     with pytest.raises(GetValueError):
         view_twits(twit_id=twit_id)
+
+
+@pytest.mark.django_db
+def test_delete_twits_succssefully() -> None:
+    profile = Profiles.objects.get(username="testuser1")
+    twit = Twits.objects.get(text="test text twit_1")
+    delete_twits(twit_id=twit.pk, profile=profile)
+    twits = Twits.objects.filter(profile=profile)
+    assert len(twits) == 2
+    with pytest.raises(Twits.DoesNotExist):
+        Twits.objects.get(text="test text twit_1")
+
+
+@pytest.mark.django_db
+def test_delete_twits_raise_profileaccesserror() -> None:
+    profile = Profiles.objects.get(username="testuser2")
+    twit = Twits.objects.get(text="test text twit_1")
+    with pytest.raises(ProfileAccessError):
+        delete_twits(twit_id=twit.pk, profile=profile)
